@@ -9,6 +9,7 @@ sys.path.append('/usr/local/lib/python2.7/site-packages')
 
 from pyimagesearch.facedetector import FaceDetector
 from pyimagesearch import imutils
+#import imutils
 import argparse
 import cv2
 
@@ -36,6 +37,9 @@ else:
 while True:
 	# grab the current frame
 	(grabbed, frame) = camera.read()
+	#grabbed, frame = camera.read()
+	#print 'grabbed: {}'.format(grabbed)
+	#print 'frame: {}'.format(frame)
 
 	# if we are viewing a video and we did not grab a
 	# frame, then we have reached the end of the video
