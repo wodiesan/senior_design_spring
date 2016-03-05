@@ -1,12 +1,16 @@
 # USAGE
 # python cam.py --face cascades/haarcascade_frontalface_default.xml
-# python cam.py --face cascades/haarcascade_frontalface_default.xml --video video/adrian_face.mov
 
 # import the necessary packages
 # sys added to access default site packages folder.
 import sys
 sys.path.append('/usr/local/lib/python2.7/site-packages')
 
+# 05MAR2016
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+from picamera.array import PiRGBArray
+from picamera import PiCamera
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 from pyimagesearch.facedetector import FaceDetector
 from pyimagesearch import imutils
 #import imutils
@@ -27,8 +31,18 @@ fd = FaceDetector(args["face"])
 # if a video path was not supplied, grab the reference
 # to the gray
 if not args.get("video", False):
-	camera = cv2.VideoCapture(0)
+	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	#camera = cv2.VideoCapture(0)
 
+	# initialize the camera and grab a reference to the raw camera capture
+	camera = PiCamera()
+	camera.resolution = (1280, 720)
+	camera.framerate = 30
+
+	# ADDED ROTATION FUNCTION.
+	camera.rotation = 270
+	rawCapture = PiRGBArray(camera, size = (1280, 720))
+	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # otherwise, load the video
 else:
 	camera = cv2.VideoCapture(args["video"])
@@ -37,9 +51,6 @@ else:
 while True:
 	# grab the current frame
 	(grabbed, frame) = camera.read()
-	#grabbed, frame = camera.read()
-	#print 'grabbed: {}'.format(grabbed)
-	#print 'frame: {}'.format(frame)
 
 	# if we are viewing a video and we did not grab a
 	# frame, then we have reached the end of the video
