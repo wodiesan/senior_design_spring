@@ -6,7 +6,7 @@
 import sys
 sys.path.append('/usr/local/lib/python2.7/site-packages')
 
-from pyimagesearch.tempimage import TempImage
+#from pyimagesearch.tempimage import TempImage
 from pyimagesearch.facedetector import FaceDetector
 # from dropbox.client import DropboxOAuth2FlowNoRedirect
 # from dropbox.client import DropboxClient
