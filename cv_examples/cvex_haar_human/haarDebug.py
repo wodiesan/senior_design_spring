@@ -96,20 +96,20 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	# Loop over the face bounding boxes and draw them.
 	for (fX, fY, fW, fH) in faceRects:
 		# Attempt: Predator shoulder cannon crosshairs.
-		sixteen = fW//16
-		bottomLeft = sixteen*2
-		bottomRight = sixteen*10
-		bottomY = sixteen*12
-		topLeft = sixteen*7
-		topRight = sixteen*9
-		cv2.line(frameClone, (topLeft, sixteen), (sixteen, topLeft), (0, 0, 255), 3)
-		cv2.line(frameClone, (topRight, sixteen), (sixteen, topRight), (0, 0, 255), 3)
-		cv2.line(frameClone, (bottomLeft, bottomY), (bottomRight, bottomY), (0, 0, 255), 3)
+		# sixteen = fW//16
+		# bottomLeft = sixteen*2
+		# bottomRight = sixteen*10
+		# bottomY = sixteen*12
+		# topLeft = sixteen*7
+		# topRight = sixteen*9
+		# cv2.line(frameClone, (topLeft, sixteen), (sixteen, topLeft), (0, 0, 255), 3)
+		# cv2.line(frameClone, (topRight, sixteen), (sixteen, topRight), (0, 0, 255), 3)
+		# cv2.line(frameClone, (bottomLeft, bottomY), (bottomRight, bottomY), (0, 0, 255), 3)
 		#cv2.line(frameClone, (fX, fY), (fX + fW, fY + fH), (0, 0, 255), 3)
-		#cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH), (0, 255, 0), 2)
+		cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH), (0, 255, 0), 3)
 
 	# Show our detected faces.
-	cv2.imshow("Face", frameClone)
+	# cv2.imshow("Face", frameClone)
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	# if the average frame is None, initialize it
@@ -149,13 +149,23 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	# 	cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 	# 	text = "Contact!"
 
+	# # draw the text and timestamp on the frame
+	# ts = timestamp.strftime("%A %d %B %Y %I:%M:%S%p")
+	# #cv2.putText(frame, "Sector: {}".format(text), (10, 20),
+	# cv2.putText(frame, "Sector", (10, 20),
+	# 	cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+	# cv2.putText(frame, ts, (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX,
+	# 	0.35, (0, 0, 255), 1)
+
+	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# draw the text and timestamp on the frame
 	ts = timestamp.strftime("%A %d %B %Y %I:%M:%S%p")
 	#cv2.putText(frame, "Sector: {}".format(text), (10, 20),
-	cv2.putText(frame, "Sector", (10, 20),
+	cv2.putText(frameClone, "Sector", (10, 20),
 		cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-	cv2.putText(frame, ts, (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX,
+	cv2.putText(frameClone, ts, (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX,
 		0.35, (0, 0, 255), 1)
+	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	# check to see if the room is occupied
 	if text == "Contact!":
@@ -192,7 +202,9 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	# check to see if the frames should be displayed to screen
 	if conf["show_video"]:
 		# display the security feed
-		cv2.imshow("Front Door", frame)
+		#cv2.imshow("Front Door", frame)
+		# Show our detected faces.
+		cv2.imshow("Face", frameClone)
 		key = cv2.waitKey(1) & 0xFF
 
 		# if the `q` key is pressed, break from the lop
