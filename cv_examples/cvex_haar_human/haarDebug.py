@@ -95,7 +95,18 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 
 	# Loop over the face bounding boxes and draw them.
 	for (fX, fY, fW, fH) in faceRects:
-		cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH), (0, 255, 0), 2)
+		# Attempt: Predator shoulder cannon crosshairs.
+		sixteen = fW//16
+		bottomLeft = sixteen*2
+		bottomRight = sixteen*10
+		bottomY = sixteen*12
+		topLeft = sixteen*7
+		topRight = sixteen*9
+		cv2.line(frameClone, (topLeft, sixteen), (sixteen, topLeft), (0, 0, 255), 3)
+		cv2.line(frameClone, (topRight, sixteen), (sixteen, topRight), (0, 0, 255), 3)
+		cv2.line(frameClone, (bottomLeft, bottomY), (bottomRight, bottomY), (0, 0, 255), 3)
+		#cv2.line(frameClone, (fX, fY), (fX + fW, fY + fH), (0, 0, 255), 3)
+		#cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH), (0, 255, 0), 2)
 
 	# Show our detected faces.
 	cv2.imshow("Face", frameClone)
