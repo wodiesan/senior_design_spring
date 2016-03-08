@@ -1,0 +1,80 @@
+\section*{Calculations}
+\label{sec:calc}
+% CHANGE GB TO 1073741824 BYTES!!!
+
+\subsection{Storage}
+
+Storage requirements for 24 hours of 720p video data (.mp4):
+\begin{equation*}
+\begin{split}
+Continual & = \left(\frac{24 \ hr}{1 \ day}\right)\left(\frac{60 \ min}{1 \ hr}\right)\left(\frac{60 \ sec}{ 1 \ min}\right)\left(\frac{17 \ mbit}{1 \ sec}\right)\left(\frac{1 \ byte}{8 \ bit}\right)\left(\frac{1 \ GB}{1737441824 \ byte}\right) \\
+& = 170.99 \ \frac{GB}{day}
+\end{split}
+\end{equation*}
+
+By limiting the active recording to moments where objects are detected, this storage requirement can be significantly lowered. Taking a theoretical family of 4 and a single dog, we can calculate for a minimum duration that the RPi2 is expected to record in 24 hours: 
+
+\begin{table}[H]
+\centering
+\caption{Known \glspl{sighting} during an average 24 hour day for a front door camera.}
+\label{floor_table}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Type     & Qty & Duration (min) & Sighting/24 hr & Total  \\ \midrule
+Person   & 4   & 1              & 2               & 8      \\
+Dog      & 1   & 1              & 2               & 2      \\
+Delivery & 2   & 1              & 1               & 2      \\ \midrule
+         &     &                &                 & 12 min
+\end{tabular}
+\end{table}
+
+With a minimum recording duration of 12 minutes based on the expected sightings (detected objects), the floor data requirements per 24 hours becomes:
+
+\begin{equation*}
+\begin{split}
+Floor \ & = \left(\frac{12 \ min}{1 \ day}\right)\left(\frac{60 \ sec}{ 1 \ min}\right)\left(\frac{17 \ Mbit}{1 \ sec}\right)\left(\frac{1 \ byte}{8 \ bit}\right)\left(\frac{1 \ GB}{1737441824 \ byte}\right) \\
+& = 0.000014254 \ \frac{GB}{day}\Rightarrow 0.014254 \ \frac{MB}{day} \Rightarrow 14.254 \ \frac{KB}{day}
+\end{split}
+\end{equation*}
+
+\subsection{Analog Light Sensor}
+
+\begin{equation*}
+\begin{split}
+    \log\left(I_{O}\right) &= mx + b \\
+    I_{O} &= m\log\left(x\right) + b \\
+    I_{O} &= 10\log\left(E_{v}\right)\left[l_{x}\right]
+\end{split}
+\end{equation*}
+
+The sensor has an output current range of $0\mu A$--$50\mu A$ between $1$ lux--$100000$ lux. The breakout board converts this current into a voltage using a $68K\Omega$ resistor, giving a voltage output of $0V$--$3.4V$. Given the use-case of the light sensor, the $3.4V$ can be approximated to $3.3V$, which is a suitable voltage reference for the RPi2. With the output current range approximated to a voltage range of $0V$--$3.3V$ between $1$ lux--$100000$ lux,
+
+\begin{equation*}
+\begin{split}
+    log_{i} &= \log\left(l_{x \ MAX} - l_{x \ MIN}\right) \\
+    &= \log\left(100000\right) = 5 \\
+\end{split}
+\end{equation*}
+
+To convert the analog value to a digital value, an 8-bit ADC is used:
+\begin{equation*}
+    ADC = \frac{log_{i}}{1024 \ steps} = 0.00488
+\end{equation*}
+
+Finally, the formula to obtain the final lux output, $l_{xo}$, on the RPi2:
+
+\begin{equation*}
+%\begin{split}
+    l_{xo} = 10^{raw_{i} \times ADC} = 10^{raw_{i} \times 0.00488}
+%\end{split}
+\end{equation*}
+
+where $raw_{i}$ is the raw value received by the ADC connected to the RPI2's GPIO.
+
+%\newpage
+
+%\begin{multicols}{2}
+%\begin{onehalfspacing}
+%\printglossary
+%\end{onehalfspacing}
+%\end{multicols}

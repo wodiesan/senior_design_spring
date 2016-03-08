@@ -1,0 +1,43 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usepackage{siunitx}
+
+\begin{document}
+\begin{circuitikz}
+\draw (0,2.2)node[anchor=north]{ATtiny85 Pin}
+    (0,1.8)node[anchor=north]{5V}
+    (0,1)
+    node[rground, yscale=-1]{}
+    %node[anchor=east] {ATtiny85 Pin: 5V}%(5,0.5) 
+    (0,1) -- (0,0)
+    to [R={\parbox{1cm}{$R_{IR}$\\\SI{27}{\ohm}}}, mirror] (3,0)
+    to [empty led,l_=$LED_{IR}$] (5,0)
+    to [empty led,l_=$LED_{IR}$] (7,0)
+    (7,0) -- (8,0)
+    to (8,-1) node[ground]{};
+    
+\draw (0,-3)node[anchor=north]{$V_{CC}$}
+    (0,-3.4)node[anchor=north]{5V}
+    (0,-4.2)
+    node[rground, yscale=-1]{}
+    to [R={\parbox{1cm}{$R_{1}$\\\SI{1.7}{\kilo\ohm}}}, mirror] (0, -6)
+    to[short, -*](0,-6.5)
+    to [R={\parbox{1cm}{$R_{2}$\\\SI{3.3}{\kilo\ohm}}}, mirror] (0, -9)
+    to (0,-9) node[ground]{}
+    (0,-6.5)to[short,-o](-2,-6.5) node[anchor=east]{$V_{o}$};
+\end{circuitikz}
+\end{document}
+
+%\usepackage[american voltages,siunitx]{circuitikz}
+
+%\begin{document}
+
+%\begin{circuitikz}
+%   \draw (0,0) to [R={\parbox{1cm}{$R_{IR}$\\\SI{39}{\ohm}}}, mirror]  (3,0);  
+%   \draw (3,0) to [empty led,l=IR] (5,0);
+%  \draw (0,-0.5) -- node[anchor=north,align=center] {\SI{5}{V}  \\ ATtiny85 Pin } (0,0.5);
+%  \draw (5,-0.5) --  node[anchor=south] {VCC} (5,0.5)  node[anchor=west] {\SI{5}{V}};
+%\end{circuitikz}
+
+%\end{document}

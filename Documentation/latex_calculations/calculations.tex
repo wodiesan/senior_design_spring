@@ -1,0 +1,368 @@
+\section{Calculations}
+\label{sec:calc}
+% CHANGE GB TO 1073741824 BYTES!!!
+
+%----------------------------------------------------------------------
+%           STORAGE
+%----------------------------------------------------------------------
+\subsection{Storage}
+
+Storage requirements for 24 hours of 720p video data (.mp4):
+\begin{equation*}
+\begin{split}
+Continual & = \left(\frac{24 \ hr}{1 \ day}\right)\left(\frac{60 \ min}{1 \ hr}\right)\left(\frac{60 \ sec}{ 1 \ min}\right)\left(\frac{17 \ mbit}{1 \ sec}\right)\left(\frac{1 \ byte}{8 \ bit}\right)\left(\frac{1 \ GB}{1737441824 \ byte}\right) \\
+& = 170.99 \ \frac{GB}{day}
+\end{split}
+\end{equation*}
+
+By limiting the active recording to moments where objects are detected, this storage requirement can be significantly lowered. Taking a theoretical family of 4 and a single dog, we can calculate for a minimum duration that the RPi2 is expected to record in 24 hours: 
+
+\begin{table}[H]
+\centering
+\caption{Known sighting during an average 24 hour day for a front door camera.}
+\label{floor_table}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Type     & Qty & Duration (min) & Sighting/24 hr & Total  \\ \midrule
+Person   & 4   & 1              & 2               & 8      \\
+Dog      & 1   & 1              & 2               & 2      \\
+Delivery & 2   & 1              & 1               & 2      \\ \midrule
+         &     &                &                 & 12 min
+\end{tabular}
+\end{table}
+
+With a minimum recording duration of 12 minutes based on the expected sightings (detected objects), the floor data requirements per 24 hours becomes:
+
+\begin{equation*}
+\begin{split}
+Floor \ & = \left(\frac{12 \ min}{1 \ day}\right)\left(\frac{60 \ sec}{ 1 \ min}\right)\left(\frac{17 \ Mbit}{1 \ sec}\right)\left(\frac{1 \ byte}{8 \ bit}\right)\left(\frac{1 \ GB}{1737441824 \ byte}\right) \\
+& = 0.000014254 \ \frac{GB}{day}\Rightarrow 0.014254 \ \frac{MB}{day} \Rightarrow 14.254 \ \frac{KB}{day}
+\end{split}
+\end{equation*}
+
+%----------------------------------------------------------------------
+%           NODS
+%----------------------------------------------------------------------
+\subsection{Night Vision}
+
+\subsubsection{Analog Light Sensor}
+
+\begin{equation*}
+\begin{split}
+    \log\left(I_{O}\right) &= mx + b \\
+    I_{O} &= m\log\left(x\right) + b \\
+    I_{O} &= 10\log\left(E_{v}\right)\left[l_{x}\right]
+\end{split}
+\end{equation*}
+
+The sensor has an output current range of $0\mu A$--$50\mu A$ between $1$ lux--$100000$ lux. The breakout board converts this current into a voltage using a $68K\Omega$ resistor, giving a voltage output of $0V$--$3.4V$. Given the use-case of the light sensor, the $3.4V$ can be approximated to $3.3V$, which is a suitable voltage reference for the ATtiny85 microcontroller. With the output current range approximated to a voltage range of $0V$--$3.3V$ between $1$ lux--$100000$ lux,
+
+\begin{equation*}
+\begin{split}
+    log_{i} &= \log\left(l_{x \ MAX} - l_{x \ MIN}\right) \\
+    &= \log\left(100000\right) = 5 \\
+\end{split}
+\end{equation*}
+
+To convert the analog value to a digital value, an 8-bit ADC is used:
+\begin{equation*}
+    ADC = \frac{log_{i}}{1024 \ steps} = 0.00488
+\end{equation*}
+
+Finally, the formula to obtain the final lux output, $l_{xo}$, on the RPi2:
+
+\begin{equation*}
+%\begin{split}
+    l_{xo} = 10^{raw_{i} \times ADC} = 10^{raw_{i} \times 0.00488}
+%\end{split}
+\end{equation*}
+
+where $raw_{i}$ is the raw value received by one of the analog pins on the ATtiny85.\\
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=0.2\textwidth]{ChauSze_SeniorDesign_VDR.PNG}}
+    \caption{Voltage divider for sensor voltage reference.}
+\end{figure}
+
+Since 3.3V was chosen as the voltage reference value for the sensor, a voltage divider will be constructed in order to drop the 5V supply:
+
+\begin{equation*}
+    V_{1} = V_{CC} \frac{R_{2}}{R_{1} + R_{2}} = 5V \frac{3.3K\Omega}{1.7K\Omega + 3.3K\Omega} = 3.3V
+\end{equation*}
+
+%----------------------------------------------------------------------
+%           LEDS
+%----------------------------------------------------------------------
+\subsubsection{Driving the LEDs}
+
+\paragraph{Single LED Iteration}
+The 8mm IR LEDs have a forward voltage drop of 1.3V and a current recommendation of 100mA. A resistor is added in series to each IR LED with the values chosen by:
+
+\begin{equation*}
+    R_{IR} = \frac{V_{CC} - V_{D}}{I_{D}} = \frac{5V - 1.3V}{100mA} = 37\Omega\approx 39\Omega
+\end{equation*}
+
+\begin{equation*}
+    P_{D} = I_{D}^{2}R_{IR} = \left(100mA\right)^{2}\left(39\Omega\right) = 0.39W
+\end{equation*}
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=0.5\textwidth]{ChauSze_SeniorDesign_IRLED.PNG}}
+    \caption{Single LED circuit branch on the Night Vision block.}
+\end{figure}
+
+\paragraph{Series LED Iteration}
+Another configuration that is being considered includes an additional IR LED onto each of the 3 ATtiny85 output pins. This changes the series resistor value to:
+
+\begin{equation*}
+    R_{IR} = \frac{V_{CC} - V_{D} - V_{D}}{I_{D}} = \frac{5V - 1.3V - 1.3V}{100mA} = 24\Omega\approx 27\Omega
+\end{equation*}
+
+\begin{equation*}
+    P_{D} = I_{D}^{2}R_{IR} = \left(100mA\right)^{2}\left(27\Omega\right) = 0.27W
+\end{equation*}
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=0.5\textwidth]{ChauSze_SeniorDesign_IRLEDII.PNG}}
+    \caption{Double LED circuit branch on the Night Vision block.}
+\end{figure}
+
+%----------------------------------------------------------------------
+%           CV PRE-PROCESSING
+%----------------------------------------------------------------------
+\subsection{Computer Vision: Pre-processing}
+
+Before performing feature extraction, a given image--also known as a frame--is pre-processed in order to increase the accuracy of object-class detection. Some of these pre-processing steps also improve feature extraction during low-ambient light conditions. Some of these image processing techniques considers a given image in sections. This type of sectioning results in kernels, which is $m \times n$ matrix ``windows'' of a given frame. Convolution is then performed on the matrix, which averages all of the pixels around the center-most pixel. 
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.475\textwidth}
+        \includegraphics[width=\textwidth]{ChauSze_SeniorDesign_CalcEx0.PNG}
+        \caption{Original image.}
+        \label{fig:CalcEx0}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.475\textwidth}
+        \includegraphics[width=\textwidth]{ChauSze_SeniorDesign_CalcEx1.PNG}
+        \caption{Converted to grayscale.}
+        \label{fig:CalcEx1}
+    \end{subfigure}
+    \caption{An original image is converted to grayscale. A $3 \times 3$ matrix is then sectioned off for further pre-processing. A grid is used in (b) to show individual pixel boundaries.}\label{fig:CalcEx}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=0.875\textwidth]{ChauSze_SeniorDesign_CalcEx2.PNG}}
+    \caption{The values for each pixel within the $3 \times 3$ matrix.}
+    \label{fig:CalcEx2}
+\end{figure}
+
+As an arbitrary example, a $3 \times 3$ matrix in Fig. \ref{fig:CalcEx1}, bordered in red, will be considered for calculations.
+
+%\begin{equation*}
+%    118 + 90 + 57 + 105 + 69 + 59 + 167 + 113 + 63 = 841
+%\end{equation*}
+
+%----------------------------------------------------------------------
+%           GAUSSIAN
+%----------------------------------------------------------------------
+\subsubsection{Gaussian Blurring}
+% http://www.pixelstech.net/article/1353768112-Gaussian-Blur-Algorithm
+% http://haishibai.blogspot.com/2009/09/image-processing-c-tutorial-4-gaussian.html
+Blurring--also known as smoothing--is an image processing technique where high frequency noise is removed from a given image at the cost of detail reduction. For the purposes of this system, blurring will improve edge detection \cite[p.~28, 32]{mallat}.
+
+Gaussian blurring was chosen due to its ability to utilize a weighted mean when averaging pixels in each frame. This specific blurring technique will allow for better performance when thresholding the frames. The name for this blurring technique comes from its use of a Gaussian function for calculations.
+
+\begin{equation}
+    G(x, y) = \frac{1}{\sqrt{2\pi\delta}}e^{-\frac{x^{2} + y^{2}}{2\delta^{2}}}
+\end{equation}
+
+Using the example arbitrary window in the previous section, each pixel is assigned a coordinate:
+
+\begin{equation*}
+    \begin{bmatrix}
+        (-1, 1) & (0, 1) & (1, 1) \\
+        (-1, 0) & (0, 0) & (1, 0) \\
+        (-1, -1) & (0, -1) & (1, -1) 
+    \end{bmatrix}
+\end{equation*}
+
+Choosing an arbitrary $\delta$ value of 1.5 the center coordinate is calculated through the Gaussian function:
+
+\begin{equation*}
+    G(0, 0) = \frac{1}{\sqrt{2\pi 1.5}}e^{-\frac{0^{2} + 0^{2}}{2 \times 1.5^{2}}} = 0.0707
+\end{equation*}
+
+Calculating the rest of the coordinates results in a weighted matrix:
+
+\begin{equation*}
+    \begin{bmatrix}
+        \textcolor{rp}{0.0454} & \textcolor{rb}{0.0566} & \textcolor{rp}{0.0454} \\
+        \textcolor{rb}{0.0566} & 0.0707 & \textcolor{rb}{0.0566} \\
+        \textcolor{rp}{0.0454} & \textcolor{rb}{0.0566} & \textcolor{rp}{0.0454}
+    \end{bmatrix}
+\end{equation*}
+
+The sum of those values becomes:
+
+\begin{equation*}
+        (0.0435 \times 4) + (0.0566 \times 4) + 0.0707 =  0.4787
+\end{equation*}
+
+Dividing by the summation will result in a weighted average matrix:
+
+\begin{equation*}
+    \frac{1}{0.479}
+    \begin{bmatrix}
+        \textcolor{rp}{0.0454} & \textcolor{rb}{0.0566} & \textcolor{rp}{0.0454} \\
+        \textcolor{rb}{0.0566} & 0.0707 & \textcolor{rb}{0.0566} \\
+        \textcolor{rp}{0.0454} & \textcolor{rb}{0.0566} & \textcolor{rp}{0.0454}
+    \end{bmatrix}
+    = 
+    \begin{bmatrix}
+        \textcolor{rp}{0.0948} & \textcolor{rb}{0.118} & \textcolor{rp}{0.0948} \\
+        \textcolor{rb}{0.118} & 0.148 & \textcolor{rb}{0.118} \\
+        \textcolor{rp}{0.0948} & \textcolor{rb}{0.118} & \textcolor{rp}{0.0948}
+    \end{bmatrix}
+\end{equation*}
+
+Multiplying each coordinate of the $3 \times 3$ window will result in a Gaussian blur:
+
+\begin{equation*}
+    \begin{bmatrix}
+        (118 \times 0.0948) & (90 \times 0.118)& (57 \times 0.0948) \\
+        (105 \times 0.118) & (69 \times 0.148) & (59 \times 0.118)\\
+        (167 \times 0.0948) & (113 \times 0.118) & (63 \times 0.0948) 
+    \end{bmatrix}
+    = 
+    \begin{bmatrix}
+        11.19 & 10.62 & 5.403 \\
+        12.39 & 10.21 & 6.962 \\
+        15.83 & 13.33 & 5.972 
+    \end{bmatrix}
+\end{equation*}
+
+Finally, summing up the values from the last matrix will result in the new value for the center-most pixel.
+
+\begin{equation*}
+        11.19 + 10.62 + 5.403 + 12.39 + 10.21 + 6.962 + 15.83 + 13.33 + 5.972 = 91.907 
+\end{equation*}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.475\textwidth}
+        \includegraphics[width=\textwidth]{ChauSze_SeniorDesign_CalcEx2.PNG}
+        \caption{Center pixel before Gaussian blur: 69.}
+        \label{fig:CalcEx3}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.475\textwidth}
+        \includegraphics[width=\textwidth]{ChauSze_SeniorDesign_CalcEx3.PNG}
+        \caption{Center pixel after Gaussian blur: 93.}
+        \label{fig:CalcEx4}
+    \end{subfigure}
+    \caption{Comparison of pixel values between the original $3 \times 3$ window against one filtered with Gaussian blur.}\label{fig:CalcEx5}
+\end{figure}
+
+As Fig. \ref{fig:CalcEx4} shows, the resulting pixel value from a Gaussian blur performed in GNU Image Manipulation Program (GIMP) is within range of the calculated value.
+
+\begin{equation*}
+    \frac{\mid GIMP - Calculated\mid}{Calculated} \times 100\% = \frac{\mid93 - 91.907\mid}{91.907} \times 100\% = 0.0119\%
+\end{equation*}
+
+%----------------------------------------------------------------------
+%           THRESH
+%----------------------------------------------------------------------
+%\subsubsection{Thresholding}
+
+%----------------------------------------------------------------------
+%           CV DETECTION
+%----------------------------------------------------------------------
+\subsection{Computer Vision: Detection}
+
+Facial detection is performed by searching a given image for features based on black and white rectangles \cite{ViolaJones}. The calculation for the regions again uses matrix convolution.
+
+The first step is a single pass through the entirety of a given image that computes the sum of all pixel values above and to the left ($+y, -x$) of the position being examined, inclusive. This is known as an integral table, that is:
+
+\begin{equation}
+    I_{\sum}\left(x, y\right) = \sum_{\substack{
+   x'\leq x \\
+   y'\leq y
+  }} i(x', y')
+\end{equation}
+
+Using the original window in Fig. \ref{fig:CalcEx2}:
+
+\begin{equation*}
+    \begin{bmatrix}
+        (i_{(-1, 1)} = 118) & (i_{(0, 1)} = 208) & (i_{(1, 1)} = 265) \\
+        
+        (i_{(-1, 0)} = 223) & (\ddots) & (\vdots)\\
+        
+        (i_{(-1, -1)} = 390) & (\cdots) & (i_{(1, -1)} = 841) 
+    \end{bmatrix}
+\end{equation*}
+
+Feature identification is then performed using black and white rectangles over the integral table. The algorithm then passes feature types (various rectangles created by training the classifier using positive and negative results) over the integral table \cite{haarTri}. Identifying features from this point on is based on a simple summation of the rectangle corners:
+
+\begin{equation}
+    A_{M} = I(A) + I(C) - I(B) - I(D)
+\end{equation}
+
+
+\subsubsection{Haar}
+
+The robustness of this method of object detection will be apparent with this final step. Consider Fig. \ref{fig:CalcHaar2}. 
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.475\textwidth}
+        \includegraphics[width=\textwidth]{ChauSze_SeniorDesign_CalcHaar1.png}
+        \caption{Haar line feature being applied to Fig. \ref{fig:CalcEx1}. Points A to D corresponds to the white rectangle's corners.}
+        \label{fig:CalcHaar1}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.475\textwidth}
+        \includegraphics[width=\textwidth]{ChauSze_SeniorDesign_CalcHaar2.png}
+        \caption{Computing the leftmost white rectangle of Fig. \ref{fig:CalcEx1}'s integral image can be quickly achieved, allowing for real-time detection.}
+        \label{fig:CalcHaar2}
+    \end{subfigure}
+    \caption{Facial detection through Haar-like features.}
+    \label{fig:CalcHaar3}
+\end{figure}
+
+By analyzing the integral table of the original image, feature extraction becomes computationally inexpensive. If a $3 \times 3$ rectangle is covering the integral table that was solved earlier, the resulting calculation is:
+
+\begin{equation*}
+    A_{M} = I(A) + I(C) - I(B) - I(D) = 118 + 841 - 265 - 390 = 304
+\end{equation*}
+  
+  This value is finally compared against the collection of rectangular Haar features collected during classifier training.
+  
+  Haar-like algorithm is grounded upon machine learning, a database of images containing positive and negative results for vehicles \cite{vehicleFeatures}. Since the detection algorithm based on Haar features is scale invariant, a set of images can then be used to train a Haar classifier for vehicles \cite{motionHaar}. This eliminates the use of blob analysis for vehicles.
+
+%----------------------------------------------------------------------
+%           ALGORITHMIC
+%----------------------------------------------------------------------
+%\subsection{Algorithmic Helper Functions}
+
+%This section lists the calculations used in the software flowcharts.
+
+%\subsubsection{Elapsed Time}
+
+%\begin{equation*}
+    
+%\end{equation*}
+
+%\newpage
+%\begin{multicols}{2}
+%\begin{onehalfspacing}
+%\printglossary
+%\end{onehalfspacing}
+%\end{multicols}

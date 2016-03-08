@@ -1,0 +1,24 @@
+\section*{Schematics}
+\label{sec:schem}
+
+Due to anticipated difficulties in driving the IR LEDs, there are two design choices for the system.
+
+\subsection{RPi2 GPIO-based Design}
+
+In this design, an ADC chip is added in order to transfer the data from the lux sensor to the RPi2.
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{ChauSze_SeniorDesign1_BBRpi.jpg}}
+    \caption{Fritzing breadboard diagram of the RPi2 design.}
+\end{figure}
+
+\subsection{Arduino-based Design}
+
+The ``Arduino-based design'', in actuality, would be a ATmega series microcontroller design. Currently, the Arduino Uno Rev. 3--based on the ATmega 328--is utilized as a quick evaluation on whether hosting the LEDs on a microcontroller (and subsequent 5V source) would better serve the purposes of night surveillance. 
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{ChauSze_SeniorDesign1_BBUno.jpg}}
+    \caption{Fritzing breadboard diagram of the Arduino design.}
+\end{figure}

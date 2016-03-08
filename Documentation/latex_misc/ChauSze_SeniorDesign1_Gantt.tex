@@ -1,0 +1,159 @@
+\documentclass[tikz]{standalone}
+\usepackage{pgfgantt}
+\title{Gantt Charts with the pgfgantt Package}
+\begin{document}
+
+%
+% A fairly complicated example from section 2.9 of the package
+% documentation. This reproduces an example from Wikipedia:
+% http://en.wikipedia.org/wiki/Gantt_chart
+%
+\definecolor{barblue}{RGB}{153,204,254}
+\definecolor{groupblue}{RGB}{51,102,254}
+\definecolor{linkred}{RGB}{165,0,33}
+\renewcommand\sfdefault{phv}
+\renewcommand\mddefault{mc}
+\renewcommand\bfdefault{bc}
+\setganttlinklabel{s-s}{START-TO-START}
+\setganttlinklabel{f-s}{FINISH-TO-START}
+\setganttlinklabel{f-f}{FINISH-TO-FINISH}
+\sffamily
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%               PRELIM SOYASHIT
+%               TODAY LINE COMMAND IS 6 LINES DOWN (TODAY=$NUM)
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+\begin{ganttchart}[
+    canvas/.append style={fill=none, draw=black!5, line width=.75pt},
+    hgrid style/.style={draw=black!5, line width=.75pt},
+    vgrid={*1{draw=gray!5, line width=.75pt}},
+    today=6,
+    today rule/.style={
+      draw=black!64,
+      dash pattern=on 3.5pt off 4.5pt,
+      line width=.25pt
+    },
+    y unit chart = .75cm,
+    today label font=\small\bfseries,
+    title/.style={draw=none, fill=none},
+    title label font=\bfseries\footnotesize,
+    title label node/.append style={below=7pt},
+    include title in canvas=false,
+    bar label font=\mdseries\small\color{black!70},
+    bar label node/.append style={left=0.5cm},
+    %bar label node/.append style={right=-5cm},
+    bar/.append style={draw=none, fill=black!63},
+    bar incomplete/.append style={fill=barblue},
+    bar progress label font=\mdseries\footnotesize\color{black!70},
+    group incomplete/.append style={fill=groupblue},
+    group left shift=0,
+    group right shift=0,
+    group height=.5,
+    group peaks tip position=0,
+    group label node/.append style={left=.6cm},
+    group progress label font=\bfseries\small,
+    link/.style={-latex, line width=1.5pt, linkred},
+    link label font=\scriptsize\bfseries,
+    link label node/.append style={below left=-2pt and 0pt}
+  ]{1}{15}
+  \gantttitle[
+    title label node/.append style={below left=7pt and -3pt}
+  ]{WEEK(S):\quad1}{1}
+  \gantttitlelist{2,...,15}{1} \\
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%               GROUP 1: RESEARCH
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  \ganttgroup[progress=100]{1. Research}{1}{4} \\
+  
+  \ganttbar[
+    progress=100
+  ]{\textbf{Brainstorming:} All}{1}{3} \\
+  
+  \ganttbar[
+    progress=100
+  ]{\textbf{Component Acquisition:} All}{2}{4} \\
+  
+  \ganttbar[
+    progress=100
+  ]{\textbf{Camera Selection:} All}{2}{4} \\[grid]
+  
+%  \ganttbar[
+%    progress=0,
+%    name=WBS1D
+%  ]{\textbf{WBS 1.4} Activity D}{4}{10} \\[grid]
+  
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%               GROUP 2: DESIGN
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  \ganttgroup[progress=86.25]{2. Design}{4}{7} \\
+  
+  \ganttbar[progress=100]{\textbf{Remote RPi Dev Environment:} R. Chau}{4}{7} \\
+  
+  \ganttbar[progress=95]{\textbf{Process Flow Design:} All}{4}{6} \\
+  
+  \ganttbar[progress=75]{\textbf{Database Design:} N. Bamford}{4}{6} \\
+  
+  \ganttbar[progress=75]{\textbf{Main Linux Box Config:} R. Chau}{5}{6} \\[grid]
+  %\ganttlink[link type=s-s]{WBS1A}{WBS1B}
+  %\ganttlink[link type=f-s]{WBS1B}{WBS1C}
+%  \ganttlink[
+%    link type=f-f,
+%    link label node/.append style=left
+%  ]{WBS1C}{WBS1D}
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%               GROUP 3: DEV
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  \ganttgroup[progress=27.86]{3. Development}{7}{11} \\
+  
+  \ganttbar[progress=25]{\textbf{REST API:} R. Chau}{7}{8} \\
+  
+  \ganttbar[progress=90]{\textbf{Night Sensor Circuit:} A. Martinez}{7}{9} \\
+  
+  \ganttbar[progress=60]{\textbf{Computer Vision, Day:} R. Chau}{7}{10} \\
+  
+  \ganttbar[progress=0]{\textbf{Computer Vision, Night:} A. Martinez}{8}{11} \\
+  
+  \ganttbar[progress=10]{\textbf{Web App, Remote Login:} N. Bamford}{7}{10} \\
+  
+  \ganttbar[progress=0]{\textbf{Web App, E-mail Alerts:} N. Bamford}{8}{10} \\
+  
+  \ganttbar[progress=0]{\textbf{Web App, Bookmarking:} N. Bamford}{9}{11} \\[grid]
+  
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%               GROUP 4: EVAL
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  \ganttgroup[progress=0]{4. Evaluation}{11}{14} \\
+  
+  \ganttbar[progress=0]{\textbf{Evaluation, Day:} All}{11}{13} \\
+  
+  \ganttbar[progress=0]{\textbf{Evaluation, Night:} All}{12}{13} \\
+  
+  \ganttbar[progress=0]{\textbf{Demo Trial, Full System:} All}{12}{14} \\[grid]
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%               GROUP 5: MANUFACTURING
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  \ganttgroup[progress=0]{5. Manufacturing}{13}{15} \\
+  
+  \ganttbar[progress=0]{\textbf{Manufacturing Soft Launch:} All}{13}{15}
+  
+\end{ganttchart}
+
+%
+% A simpler example from the package documentation:
+%
+%\begin{ganttchart}{1}{12}
+%  \gantttitle{2011}{12} \\
+%  \gantttitlelist{1,...,12}{1} \\
+%  \ganttgroup{Group 1}{1}{7} \\
+%  \ganttbar{Task 1}{1}{2} \\
+%  \ganttlinkedbar{Task 2}{3}{7} \ganttnewline
+%  \ganttmilestone{Milestone}{7} \ganttnewline
+%  \ganttbar{Final Task}{8}{12}
+%  \ganttlink{elem2}{elem3}
+%  \ganttlink{elem3}{elem4}
+%\end{ganttchart}
+
+\end{document}

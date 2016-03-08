@@ -1,0 +1,558 @@
+\documentclass[12pt]{article}
+%\usepackage{fontspec}
+%\usepackage[utf8]{inputenc}
+
+\usepackage[margin=1in]{geometry}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{xfrac}
+\usepackage{subfig}
+\captionsetup{belowskip=12pt,aboveskip=4pt}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{csquotes}
+
+\usepackage{amsmath}
+\usepackage{mathptmx}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{verbatim}
+\usepackage{gensymb}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\usepackage{listings}
+\usepackage{color}
+\definecolor{lightgrey}{rgb}{0.9,0.9,0.9}
+\definecolor{darkgreen}{rgb}{0,0.6,0}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\cfoot{Confidential $\mid$ ELEC4500--2016 Rev. 3}
+\rfoot{\thepage}
+
+\usepackage{multicol} % Required for splitting text into multiple columns
+\setlength{\columnsep}{1cm}
+\usepackage[toc]{glossaries}
+\usepackage[protrusion=true,expansion=true]{microtype} % Improves spacing
+%\usepackage[bf,sf,center]{titlesec} % Required for modifying section titles - bold, sans-serif, centered
+%\usepackage{fancyhdr} % Required for modifying headers and footers
+%\usepackage{subfiles}
+
+\usepackage[toc,page]{appendix}
+
+\makeglossaries
+\input{./glossary.tex}
+
+\begin{document}\thispagestyle{empty}
+\pagenumbering{gobble}
+\input{./title.tex}
+\titleTMB
+\newpage
+\doublespacing
+
+%\documentclass[12pt]{article}
+%\usepackage{graphicx}
+%\usepackage{float}
+%\usepackage{chngpage}
+%\addtolength{\topmargin}{-.5in}
+%\textheight = 650pt
+%\usepackage{helvet}
+%\renewcommand{\familydefault}{\sfdefault}
+
+%\begin{document}
+
+%----------------------------------------------------------------------
+% ECO
+%----------------------------------------------------------------------
+%\vspace{5in}
+\begin{table}[H]
+\centering
+\caption{Revision history.}
+\label{table_rev}
+\begin{tabular}{@{}llcc@{}}
+\toprule
+\multicolumn{2}{c}{Senior Electronic Design Proposal}                                                          & \multicolumn{2}{c}{Document Number: ELEC4500--2016} \\ \midrule
+Rev. & \multicolumn{1}{l}{Description of Change}                                                               & \S $\ $ Affected & \multicolumn{1}{c}{Originator}   \\
+     &                                                                                                         &                  &                                  \\
+01   & Initial Release                                                                                         & All              & N. Bamford, R. Chau, A. Martinez \\
+     &                                                                                                         &                  &                                  \\
+02   & \begin{tabular}[c]{@{}l@{}}General Proofreading\\ Add Glossary and Calculations\\ Add Fig. 6--9, Tbl. \ref{software_req}\\ Revise Fig. 5, Sec. 6, \& References \end{tabular} & All              & R. Chau                          \\
+     &                                                                                                         &                  &                                  \\
+03   & \begin{tabular}[c]{@{}l@{}}Revise Calculations and Progress Chart\\ Add Flowcharts and Schematics \end{tabular} & All              & N. Bamford, R. Chau, A. Martinez                          \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\newpage
+
+%----------------------------------------------------------------------
+% Abstract and Table of Contents
+%----------------------------------------------------------------------
+\begin{abstract}\thispagestyle{empty}
+
+A low-cost, low-maintenance, Raspberry \Gls{Pi} 2-based home surveillance system is proposed in this document. This system is designed to allow a homeowner to record digital footage--through low-ambient environments--when a motion threshold is surpassed. The system will include basic human \gls{detection} and object \gls{recognition} features. Recorded videos will be cataloged by the object type that activated the camera, e.g. human, vehicle, and others. This proposed functionality will allow a homeowner to quickly access the database of footage through categorical ``bookmarks'' based on metadata such as date, time, and type of object. The result is a lightweight and scalable home surveillance system that remains inexpensive for storage. 
+
+\end{abstract}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\listoffigures
+
+\listoftables
+
+\newpage
+
+%---------------------------------------------------------------------
+% Intro
+%---------------------------------------------------------------------
+\pagenumbering{arabic}
+\section{Problem Statement and Motivation}
+
+Newton, Massachusetts is constantly rated as one of the safest cities in the country; that doesn't mean that crime doesn't occur in the city \cite{newton}. At a localized point of view, one of the engineers on this project--a resident of Newton--accumulated numerous experiences that required the actions of Newton Police Department.  In 2015, the neighbor of this engineer had their house broken into. Thieves kicked in the back door; no one noticed the incident. A few months later, Newton Police was called upon to dust (for fingerprints) a family member’s work van after it was broken into for tools. On the week of Christmas, the garage of another neighbor was broken into overnight. This neighbor was restoring a classic muscle car, and the progress was halted due to stolen rare parts. The worst incident, however, happened a few years ago to the engineer’s friend that was--at the time--living in West Newton. It was a home invasion where the homeowner was tied up at gunpoint, and the thieves tossed her dog into a closet before leaving with jewelry and a safe. To this day the perpetrators were never caught.
+
+The constraints of this device, as determined by informal surveying of Newton homeowners, include the ability to determine if there is an object in motion near a home entrance and to capture a video if this criteria is met. A secondary requirement requested asks for the design of a method to distinguish a human from other objects such as vehicles, and to create a metadata sorting method based on these identification criteria alongside date/time.
+
+The design must take these traits into consideration, or else the system would be severely handicapped and similar to existing commercial systems. The proposed home surveillance system acts as an affordable, mobile, and open source bridge between available, albeit expensive commercial products that either secures empty homes or monitor internal dwellings.
+
+\section{Background}
+
+Literary research for this design split into two distinct avenues: Computer vision and  a novelty investigation into currently available commercial solutions.
+
+\subsection{Computer Vision}
+
+The development of an image processing technique that fits our objectives involves object \gls{recognition} within the field of computer vision. Computer vision is the science of imagery acquisition and interpretation through the use of computers \cite[p.~1-5]{cv}. Object \gls{recognition} describes the task of locating, or recognizing, specific objects within images. In the case of our design, object \gls{recognition} tasks could be incorporated to evaluate initial images arriving from a camera unit for identification of humans or vehicles. The object \gls{recognition} methods that are currently being considered includes \gls{Haar}-like features and \gls{Blob} \gls{detection}.
+
+\subsubsection{Haar-like Features}
+
+\gls{Haar}-like features gets their namesake due to similarities to \gls{Haar} wavelet transforms. It is an object \gls{recognition} algorithm that seeks out common patterns by calculating spatial relationships of information (such as contrast) of the target object \cite[p.~1]{haar}. These patterns that the \gls{Haar}-like algorithm checks are rectangular features that specific objects all have, such as the distance between a human’s eyes, or nose. As human \gls{recognition} is an important feature in the proposed system, a \gls{Haar}-based facial \gls{detection} algorithm will be investigated for the prototype.
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=0.55\textwidth]{leena_haar.jpg}}
+    \caption{\gls{Haar}-like cascade algorithm used to detect human faces.}
+\end{figure}
+
+\subsubsection{Blob Detection and Analysis}
+
+\Gls{Blob}s refer to regions of similar pixels in an image. Blob algorithms locates these regions and assigns a category to it based on light or color values \cite[p.~8-18]{blob}. This method requires segmentation of the target image, which involves in the removal of everything outside the region of interest. Depending on the target environment, \gls{Blob} analysis is subject to noise in the form of mis-categorized \gls{Blob}s. The deployment of a \gls{Blob} analysis algorithm would require significant pre-processing of our target object. The advantage of utilizing \gls{Blob} \gls{detection}, however, includes simple identification of large, single-color dominant objects such as vehicles. Due to this capability, \gls{Blob} \gls{detection} will be one of the algorithms used for the prototype. Of concern is the dependability of \gls{Blob} \gls{detection} during low ambient conditions.
+
+%\subsubsection{Other Computer Vision Methods}
+% Other potential computer vision methods--such as feature detection methods--will be investigated.
+
+\subsection{Novelty Investigation}
+
+The investigation focused on three major companies with home monitoring commercial solutions. Verizon and Comcast have indoor and outdoor cameras that provide a wireless security system capable with live stream alongside phone apps. This is something that the team aims to pursue (time-dependent). For the proposed system, it is important that the final design remains cost efficient, and the main feature to implement--object \gls{detection} alongside an alert system--is something that current commercial products haven't introduced to the market. Looking at companies that supply commercial home surveillance systems, the team wanted to identify: 
+
+\begin{singlespace}
+
+\begin{itemize}
+    \item Patterns of features.
+    \item Whether the plan comes with a subscription.
+    \item Installation cost, if any.
+    \item Cost of the physical equipment.
+\end{itemize}
+
+\end{singlespace}
+
+\subsubsection{Verizon}
+
+Verizon offers a home security camera using the brand Canary, a 1080p HD camera able to live stream real time video and audio via a laptop or an app (requires 1 Mbps upload) \cite{verizon}. The camera is equipped with automatic night vision able to viewable with a 25 feet range. The camera is capable of motion \gls{detection} which can be activated and start recording once it senses movement. The sensors are a 3-axis accelerometer with ambient light and capacitive touch. Verizon does not require a personal installation contractor, the camera is an easy 1-2-3 set up and doesn't require a subscription fee.  The app is compatible with IPhone running iOS 7 and higher, and Android 4.0. Cost for everything is \$200 which includes camera, microusb cable, guide, and setup cable.
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=0.75\textwidth]{verizon.jpg}}
+    \caption{Verizon Canary system.}
+\end{figure}
+
+\subsubsection{Comcast}
+
+Comcast Xfinity Homes offers a home security camera that seems to be smaller in size but is able to be placed outside of your house since it is more weather-proof \cite{comcast}. The camera's features are 720p HD resolution, it has night vision although not specified of the range, supports wifi and has sensor motion as well. Although the features for the camera are vague, it comes with a custom tablet and a keypad where you can control the camera. It is optional to use an app on your phone or a laptop to view live video monitoring in and outside your home. For the pricing, the equipment will cost \$200 not including the \$99 installation fee (depending on where you live). Then there is the subscription fee of \$30 a month, which makes the total cost in a range between \$300 to \$400.
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=0.95\textwidth]{comcast.jpg}}
+    \caption{Comcast Xfinity Homes system.}
+\end{figure}
+
+\subsubsection{ADT}
+
+ADT Security offers a home surveillance camera called the ADT Pulse Camera, it's a wireless day/night camera \cite{adt}. The camera is equipped with video motion \gls{detection}, a light sensor for night vision, and the camera can capture images that can be viewed online. The security system use their own encrypted wifi accessed through WPA2. The downfall of this camera is you are not able to deliver or store audio when recording the device. The device is also capable of high/low temperature monitoring, light control, climate control, small appliance management and remote access. When it comes to the pricing the installation charge is \$99, comes with a 3 year monitoring agreement that is \$36.99 per month, which is an added total of \$1,331.64. 
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=0.75\textwidth]{adt.jpg}}
+    \caption{ADT Pulse system.}
+\end{figure}
+
+\section{Proposed Solution}
+
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=.75\textwidth]{ChauSze_SeniorDesign_ProposedBlock.PNG}}
+    \caption{High level block diagram of proposed monitoring system.}
+\end{figure}
+
+
+\begin{table}[H]
+\centering
+\caption{Minimum software requirements for proposed solution.}
+\label{software_req}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Technology & Version & Type                              & License                    \\ \midrule
+Raspbian   & Jessie  & Raspberry Pi Linux OS Distro      & GPLv2                      \\
+Debian     & Jessie  & Desktop Linux OS Distro           & DFSG-Compliant             \\
+Apache     & 2.4.18  & Web Server                        & Apache 2.0                 \\
+MySQL      & 5.7.11  & Relational DB Management System   & GPLv2                      \\
+Python     & 2.7     & General Purpose Language          & Python Software Foundation \\
+OpenCV     & 3.0.0   & Computer Vision Library           & BSD                        \\
+Plotly     & 1.9.5   & Data Visualization Python Library & MIT                        \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Website Mockups}
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=.75\textwidth]{ChauSze_SeniorDesign1_Mockup1.PNG}}
+    \caption{Website mockup: \gls{livestream}, daytime.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=.75\textwidth]{ChauSze_SeniorDesign1_Mockup2.PNG}}
+    \caption{Website mockup: \gls{livestream}, nighttime.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=.75\textwidth]{ChauSze_SeniorDesign1_Mockup3.PNG}}
+    \caption{Website mockup: History of detected objects.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=.75\textwidth]{ChauSze_SeniorDesign1_Mockup4.PNG}}
+    \caption{Website mockup: Data visualization.}
+\end{figure}
+
+\subsection{Technology Selection and Rationale}
+
+In the spirit of universal access to the general public, the proposed system focuses on the utilization of \gls{open source} hardware and software. As such, the Raspberry \Gls{Pi} 2 Model B--a single-board computer--was chosen as the platform for the proposed system. The software architecture will primarily focus on the \Gls{SimpleCV} framework. Simple Computer Vision, officially \Gls{SimpleCV}, is a collection of libraries and algorithms written in Python used for computer vision applications \cite{simplecv}. This \gls{open source} framework allows the Pi to access an attached camera unit and apply object \gls{recognition} tasks to the extracted images. The combination of \Gls{SimpleCV} and the Pi means that Python, the official language for both entities, will be the programming language of choice for the overall system.
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=0.75\textwidth]{proposal_rpi.jpg}}
+    \caption{Raspberry Pi 2 Model B (top) encased with a camera module.}
+\end{figure}
+
+
+\begin{table}[H]
+\centering
+\caption{Raspberry Pi 2 specifications.}
+\label{fig_spec}
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=0.85\textwidth]{rpi_specs.png}}
+    %\caption{LAMP architecture for web application.}
+\end{figure}
+\end{table}
+
+The web platform will utilize a basic \Gls{LAMP} architecture on a separate Linux box for prototyping purposes.
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=0.75\textwidth]{lamp.PNG}}
+    \caption{\Gls{LAMP} architecture for web application.}
+\end{figure}
+
+\subsection{Feature Comparison of Commercial Systems}
+
+\begin{table}[H]
+\centering
+\caption{Comparison of major features from commercial systems.}
+\label{table_features}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Feature                 & \multicolumn{1}{l}{ADT} & \multicolumn{1}{l}{Comcast} & \multicolumn{1}{l}{Verizon} \\ \midrule
+Weatherproof Camera     &                         & x                           &                             \\
+Nightvision             & x                       & x                           & x                           \\
+HD Quality              &                         & x                           & x                           \\
+Motion \Gls{detection}        & x                       & x                           & x                           \\
+\Gls{livestream}              & x                       & x                           & x                           \\
+Custom Notifications    & x                       &                             &                             \\
+Subscription Fee        & {\color{red}x}                       & {\color{red}x}                           &                             \\
+Contractor Installation & {\color{red}x}                       & {\color{red}x}                           &                             \\ \bottomrule
+\end{tabular}
+\end{table}
+
+As shown in the previous section, cable companies use their brand to set up home surveillance security system around the house to make package deals where the camera, the wifi and the applications are already immutable and installed. That is how companies get the upper hand because the majority of customers don't want to do the research; they prefer that everything is easy to set up. In addition, if the homeowner would not have to pay for an installation fee and can find a cheaper subscription, then it would ease the burden of cost. There are multiple projects, gadgets, and devices that can be found online with guides on how to install the equipment. The problem with that is just the variety of different cameras that can confuse a lot of customers on what product to use and what features are important.
+
+\section{Risks and Challenges}
+
+Due to the ambitious nature of the project, a proposed feature, an Android-based application for \gls{livestream}ing, might not be implemented within the allotted time. This feature will be dependant on the duration of time expended for the major features (object \gls{detection} and \{gls{recognition}). The team feels that the creation of a functional prototype with dependable computer vision features and a web-based interface would trump a system with a rushed and buggy features.
+
+\subsection{Ethical Considerations}
+Under Massachusetts General Law, Interception of Wire and Oral Communications, it is permitted for a homeowner to record video surveillance of their home so long as the recording contains no audio \cite{audiolaw}. Due to this constraint, the system will not include any method of recording audio.
+
+Condominium owners, however, are subject to Massachusetts General Law Chapter 183A: Condominiums \cite{condolaw}, and as such may or may not have the right to install a surveillance system should it impede in neighboring unit owner's right to privacy \cite{privacylaw}. \footnote{This section does not constitute as legal advice and should not be acted upon as such. Please seek an attorney for clarification on your home surveillance rights.}
+
+\section{Bill of Materials}
+
+\begin{table}[H]
+\centering
+\caption{Prototyping bill of materials.}
+\label{table_bom}
+\scalebox{0.95}{
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+Description                      & Vendor               & \multicolumn{1}{c}{ID} & \multicolumn{1}{c}{Unit Cost} & \multicolumn{1}{c}{Qty} & Ext. Cost \\ \midrule
+Raspberry Pi 2 - Model B         & Adafruit             & 2358                   & \$39.95                       & 1                       & \$39.95   \\
+Raspberry Pi Camera Board        & Adafruit             & 1367                   & \$29.95                       & 1                       & \$29.95   \\
+WiFi 802.11b/g/n Module          & Adafruit             & 814                    & \$11.95                       & 1                       & \$11.95   \\
+8GB Class 10 SD/MicroSD          & Adafruit             & 2692                   & \$9.95                        & 1                       & \$9.95    \\
+5V 2A Power Supply USB Connector & Adafruit             & 1994                   & \$6.95                        & 1                       & \$6.95    \\
+Log-scale Analog Light Sensor    & Adafruit             & 1384                   & \$3.95                        & 1                       & \$3.95    \\
+5mm IR LED 940nm                 & Adafruit             & 387                    & \$0.75                        & 10                      & \$7.50    \\
+12' ft Micro-USB to USB Cable    & Amazon               & 2185                   & \$6.40                        & 1                       & \$6.40    \\
+SanDisk 32GB microSDHC Class 10    & Amazon               & B010Q57T02                   & \$12.75                        & 1                       & \$12.75    \\
+Proto Armour for Raspberry Pi    & MobileApp            & 100052                 & \$35.00                       & 1                       & \$35.00   \\ \midrule
+Total Cost:                      & \multicolumn{1}{l}{} & \multicolumn{1}{l}{}   &                               & \multicolumn{1}{l}{}    & \$164.35 
+\end{tabular}
+}
+\end{table}
+
+\section{Division of Labor}
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=.975\textwidth]{ChauSze_SeniorDesign_DivLabor.PNG}}
+    \caption{Progress as of 15 FEB, 2016, broken up by \gls{sprint}s.}
+\end{figure}
+\newpage
+
+Rather than following the waterfall development model that is prevalent in academia, this project will be largely executed through Scrum-based methodology \cite[pp.~22-32]{scrum}. As such, the completion dates for each task will be mutable. Scrum was chosen by the team due to its iterative and flexible nature; roadblocks such as the one encountered during \emph{TASK 2: Remote Pi Dev Environment} can be bypassed for another task, thereby keeping the team's momentum moving forward \cite{meeting}. 
+
+Each week the team will meet at a minimum of 2 (not counting lecture block), but preferably 3 times in person. Each meeting will begin with a 5 minute maximum \gls{stand-up} where each member will summarize:
+
+\begin{singlespace}
+
+\begin{enumerate}
+    \item What was accomplished since the last meeting.
+    \item Which task is being worked on.
+    \item Roadblocks or backlogs.
+\end{enumerate}
+
+\end{singlespace}
+
+Finally, the Monday lecture block will be utilized as the daily \gls{stand-up} meeting, thereby maximizing lab hours for development-related tasks. 
+
+\begin{singlespace}
+
+\subsection{Research Sprint}
+\subsubsection{Brainstorming}
+\begin{itemize}
+\item Research commercial residential security systems.
+\item Research computer vision algorithms.
+\item Build high-level block diagram.
+\item Configure \Gls{ShareLaTeX} repository.
+\item Configure \Gls{Google Drive} repository.
+\item Configure \Gls{Dropbox} repository.
+\end{itemize}
+
+\subsubsection{Component Acquisition}
+\begin{itemize}
+\item Perform cost analysis and build bill of materials.
+\item Purchase components.
+\end{itemize}
+
+\subsubsection{Camera Selection}
+\begin{itemize}
+\item Evaluate RPi camera module and USB-based webcam on RPi 2.
+\end{itemize}
+
+\subsection{Design Sprint}
+\subsubsection{Remote RPi Dev Environment}
+\begin{itemize}
+\item Configure virtual environment for project.
+\item Set up Python wrappers for \Gls{OpenCV} and \Gls{SimpleCV}.
+\item Configure \Gls{VNC} and Adafruit \Gls{WebIDE} for remote access to prototype Raspberry Pi.
+\item Configure \Gls{GitHub} repository for version control.
+\end{itemize}
+
+\subsubsection{Process Flow Design}
+\begin{itemize}
+\item Build process flowchart based upon functional requirements.
+\item Build website UI flowchart.
+\item Build low level block diagrams, as needed.
+\end{itemize}
+
+\subsubsection{Database Design}
+\begin{itemize}
+\item Design entity-relationship database based on the functional requirements.
+\end{itemize}
+
+\subsubsection{Main Linux Box Config}
+\begin{itemize}
+\item Set up Linux Debian.
+\item Set up Apache web server.
+\item Set up MySQL database.
+\end{itemize}
+
+\subsection{Development Sprint}
+\subsubsection{REST API}
+\begin{itemize}
+\item Develop (\Gls{REST}ful) Python \Gls{API} bindings to access \Gls{MySQL} database.
+\end{itemize}
+
+\subsubsection{Night Sensor Circuit}
+\begin{itemize}
+\item Calculate sensor model for light sensor.
+\item Build schematic.
+\item Breadboard IR LED array.
+\end{itemize}
+
+\subsubsection{Computer Vision, Day}
+\begin{itemize}
+\item Develop motion sensor feature.
+\item Develop human classifier--through \Gls{SimpleCV} Library--in Python.
+\item Develop car classifier--through SimpleCV Library--in Python.
+\end{itemize}
+
+\subsubsection{Computer Vision, Night}
+\begin{itemize}
+\item Trial daytime computer vision function during low-ambient conditions. Refine as needed.
+\end{itemize}
+
+\subsubsection{Web App, Remote Login}
+\begin{itemize}
+\item Develop a secure method to log into web app.
+\end{itemize}
+
+\subsubsection{Web App, E-mail Alerts}
+\begin{itemize}
+\item Develop the functions that will alert the user of movement.
+\item Refine alert constraints to reduce needless alerts.
+\end{itemize}
+
+\subsubsection{Web App, Bookmarking}
+\begin{itemize}
+\item Develop bookmarking system based on database design.
+\item Develop user-configurable history page. Pull a still image from each recording and embed--alongside metadata-- the related record. 
+\item Develop \gls{livestream}ing by dynamically embedding recordings onto website.
+\item Develop charts based on detection history using Google Charts \Gls{API}, \Gls{Plotly}, or another data visualization graphing system with a Python wrapper.
+\end{itemize}
+
+\subsection{Evaluation Sprint}
+\subsubsection{Evaluation, Day}
+\begin{itemize}
+\item Trial prototype based on the methods listed in the following section.
+\end{itemize}
+
+\subsubsection{Evaluation, Night}
+\begin{itemize}
+\item Trial prototype based on the methods listed in the following section. 
+\end{itemize}
+
+\subsubsection{Demo Trial, Full System}
+\begin{itemize}
+\item Evaluate complete prototype. Refine as needed.
+\item Refactor code base.
+\end{itemize}
+
+\subsection{Manufacturing Sprint}
+\subsubsection{Manufacturing Soft Launch}
+\begin{itemize}
+\item Create promotional video using the prototype.
+\item Cost analysis for 10,000 units.
+\end{itemize}
+
+\end{singlespace}
+
+\section{Evaluation Methods}
+
+As part of the prototyping analysis phase, the system will be trialed during daytime, low ambient, and--weather permitting--heavy snow conditions. The trials will also focus on two major identification categories: Human and Vehicle.
+
+\begin{singlespace}
+
+\subsection{Ambient Conditions}
+
+\begin{enumerate}
+    \item Daytime, clear view.
+    \item Daytime, snowy conditions.
+    \item Low ambient, clear view.
+\end{enumerate}
+
+\subsection{Human Identification}
+
+Four types of facial conditions will be used in the trials:
+
+\begin{enumerate}
+    \item Human with uncovered hair and face, short hair.
+    \item Human with uncovered hair and face, shoulder-length hair.
+    \item Human wearing a hoodie.
+    \item Human wearing a baseball cap.
+\end{enumerate}
+
+\subsection{Vehicle Identification}
+
+Three types of vehicles will be used in the trials:
+
+\begin{enumerate}
+    \item Black SUV
+    \item White Van
+    \item White Sedan
+\end{enumerate}
+
+\end{singlespace}
+
+%---------------------------------------------------------------------
+% Conclusion
+%---------------------------------------------------------------------
+\section{Conclusion}
+The design outlined in this proposal will allow for the deployment of a low cost, open source device capable of performing the constraints set forth. Careful research analysis and planning in design implementation will be maintained through the entire process in an effort to minimize disturbances to the research subject populations and conditions. Overall cost is reduced by a preference towards open sourced hardware and software. Features that increase usability in the low ambient conditions are also balanced into the product. 
+
+This design can evolve from the initial concepts through meetings with the researchers and prototyping trials. The Home Surveillance System will be able to accomplish data-gathering and metadata categorization of both humans and vehicles with strict identification abilities.
+
+\newpage
+\section{Appendix}
+\pagenumbering{roman}
+
+%\newpage
+\addcontentsline{toc}{section}{\nameref{sec:calc}}
+\input{calculations}
+
+\newpage
+\addcontentsline{toc}{section}{\nameref{sec:schem}}
+\input{schematics}
+
+\newpage
+\addcontentsline{toc}{section}{\nameref{sec:flow}}
+\input{flowcharts}
+
+%\newpage
+%\addcontentsline{toc}{section}{\nameref{sec:db}}
+%\input{database}
+
+\newpage
+\begin{multicols}{2}
+\begin{onehalfspacing}
+\printglossary
+\end{onehalfspacing}
+\end{multicols}
+
+\newpage
+
+\input{glossary}
+
+\addcontentsline{toc}{section}{References}
+\input{bibl}
+
+\end{document}
