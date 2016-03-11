@@ -81,7 +81,8 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	# resize the frame, convert it to grayscale, and blur it
 	# IMUTILS.RESIZE CHANGED FROM 500 D/T RESIZING OF PREVIEW STREAM
 	#frame = imutils.resize(frame, width=500)
-	frame = imutils.resize(frame, width=1280)
+	frame = imutils.resize(frame, width=480)
+	#frame = imutils.resize(frame, width=1280)
 	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 	gray = cv2.GaussianBlur(gray, (21, 21), 0)
 
@@ -107,6 +108,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		# cv2.line(frameClone, (bottomLeft, bottomY), (bottomRight, bottomY), (0, 0, 255), 3)
 		#cv2.line(frameClone, (fX, fY), (fX + fW, fY + fH), (0, 0, 255), 3)
 		cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH), (0, 255, 0), 3)
+		text = 'Encounter!'
 
 	# Show our detected faces.
 	# cv2.imshow("Face", frameClone)
@@ -160,15 +162,15 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# draw the text and timestamp on the frame
 	ts = timestamp.strftime("%A %d %B %Y %I:%M:%S%p")
-	#cv2.putText(frame, "Sector: {}".format(text), (10, 20),
-	cv2.putText(frameClone, "Sector", (10, 20),
+	cv2.putText(frameClone, "Sector: {}".format(text), (10, 20),
+	#cv2.putText(frameClone, "Sector", (10, 20),
 		cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 	cv2.putText(frameClone, ts, (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX,
 		0.35, (0, 0, 255), 1)
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	# check to see if the room is occupied
-	if text == "Contact!":
+	if text == "Encounter!":
 		# check to see if enough time has passed between uploads
 		if (timestamp - lastUploaded).seconds >= conf["min_upload_seconds"]:
 			# increment the motion counter
