@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+# sys added to access default site packages folder.
+import sys
+sys.path.append('/usr/local/lib/python2.7/site-packages')
+
 """
 ELEC4500 Senior Design 1 | Spring 2016
 Stand-alone human silhouette detection through HOG + Linear SVM.
@@ -9,13 +13,12 @@ Requires a directory where the detection will be executed.
 from __future__ import print_function
 from imutils.object_detection import non_max_suppression
 from imutils import paths
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 import numpy as np
 import argparse
 import imutils
 import cv2
-# sys added to access default site packages folder.
-import sys
-sys.path.append('/usr/local/lib/python2.7/site-packages')
 
 # Front Matter
 __author__      = "Sze 'Ron'Chau"
@@ -31,7 +34,22 @@ __status__      = "Prototype"
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--images", required=True, help="""path to
                 images directory""")
+ap.add_argument("c", "--conf", required=True,
+		help = "path to the JSON config file.")
 args = vars(ap.parse_args())
+
+warnings.filterwarnings("ignore")
+conf = json.load(open(args["conf"]))
+
+camera = PiCamera()
+camera.resolution = tuple(conf["resolution"])
+camera.framerate = conf["fps"]
+camera.rotation = 270
+
+rawCapture = PiRGBArray(camera, size=tuple(conf["resolution']))
+
+print "[INFO] Initializing camera..."
+time.sleep(conf["camera_warmup_time"])
 
 # Init HOG detector and set SVM to pre-trained silhouette detector.
 hog = cv2.HOGDescriptor()

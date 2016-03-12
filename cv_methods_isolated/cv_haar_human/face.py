@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+# sys added to access default site packages folder.
+import sys
+sys.path.append('/usr/local/lib/python2.7/site-packages')
+
 """
 ELEC4500 Senior Design 1 | Spring 2016
 Stand-alone human facial detection through Haar Cascades.
@@ -16,9 +20,6 @@ import imutils
 import json
 import time
 import cv2
-# sys added to access default site packages folder.
-import sys
-sys.path.append('/usr/local/lib/python2.7/site-packages')
 
 # Front Matter
 __author__      = "Sze 'Ron'Chau"
