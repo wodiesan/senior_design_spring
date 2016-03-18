@@ -6,8 +6,7 @@ sys.path.append('/usr/local/lib/python2.7/site-packages')
 """
 ELEC4500 Senior Design 1 | Spring 2016
 Stand-alone human silhouette detection through HOG + Linear SVM.
-
-Requires a directory where the detection will be executed.
+Utilizes the Raspberry Pi 2 camera module for detection.
 """
 
 from __future__ import print_function
@@ -20,77 +19,113 @@ import argparse
 import imutils
 import cv2
 
-# Front Matter
-__author__      = "Sze 'Ron'Chau"
-__copyright__   = "Copyright 2016, Sze Chau"
-__credits__     = "Adrian Rosebrock, Ph.D."
-__license__     = "MIT"
-__version__     = "0.0.1"
-__maintainer__  = "Sze 'Ron' Chau"
-__email__       = "wodiesan@gmail.com"
-__status__      = "Prototype"
+# Front matter.
+__author__ = "Sze 'Ron' Chau"
+__copyright__ = "Copyright 2016, Sze 'Ron' Chau"
+__credits__ = "Adrian Rosebrock, Ph.D."
+__license__ = "MIT"
+__version__ = "0.0.1"
+__maintainer__ = "Sze 'Ron' Chau"
+__email__ = "wodiesan@gmail.com"
+__status__ = "Prototype"
 
-# Construct the argument parse and parse the arguments.
+# Construct the argument parse.
 ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--images", required=True, help="""path to
-                images directory""")
-ap.add_argument("c", "--conf", required=True,
-		help = "path to the JSON config file.")
+ap.add_argument("c", "--conf", required=True, help="JSON camera config.")
 args = vars(ap.parse_args())
 
+# Supress expected warning and access camera config file.
 warnings.filterwarnings("ignore")
 conf = json.load(open(args["conf"]))
 
+# Populate JSON camera config.
 camera = PiCamera()
 camera.resolution = tuple(conf["resolution"])
 camera.framerate = conf["fps"]
-camera.rotation = 270
+camera.rotation = conf["rotation"]
+# print 'Initializing camera module.'
 
-rawCapture = PiRGBArray(camera, size=tuple(conf["resolution']))
-
-print "[INFO] Initializing camera..."
+# Complete init for camera.
+rawCapture = PiRGBArray(camera, size=tuple(conf["resolution"]))
 time.sleep(conf["camera_warmup_time"])
 
-# Init HOG detector and set SVM to pre-trained silhouette detector.
+# Init HOG detector, set SVM to pre-trained human silhouette detector.
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
-# Loop over the image paths.
-for imagePath in paths.list_images(args["images"]):
+# Capture frames from camera module.
+for f in camera.capture_continuous(rawCapture, format="bgr",
+                                   use_video_port=True):
+
+    # Grab raw numpy array representing the img.
+    # Init timestamp and on-screen status text.
+    frame = f.array
+    timestamp = datetime.datetime.now()
+    text = "Clear"
+
+    # Resize frame, preprocess to grayscale and Gaussian blur.
+    frame = imutils.resize(frame, width=conf["frame_width"])
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    gray = cv2.GaussianBlur(gray, (21, 21), 0)
+
+# STATIC IMAGES: Loop over the image paths.
+# for imagePath in paths.list_images(args["images"]):
     # Load the image and resize it to:
     # 1. Reduce detection time.
     # 2. Improve detection accuracy.
-    image = cv2.imread(imagePath)
-    image = imutils.resize(image, width=min(400, image.shape[1]))
-    orig = image.copy()
+    # image = cv2.imread(imagePath)
+    # image = imutils.resize(image, width=min(400, image.shape[1]))
+    # orig = image.copy()
 
-    # Detect people in the image. Scale is the MOST IMPORTANT TO TUNE.
-    (rects, weights) = hog.detectMultiScale(image, winStride=(4, 4),
-                                            padding=(8, 8), scale=1.05)
+    # Save a clone of the frame before preprocessing. Used for live preview.
+    frameClone = frame.copy()
 
-    # draw the original bounding boxes
-    for (x, y, w, h) in rects:
-        cv2.rectangle(orig, (x, y), (x + w, y + h), (0, 0, 255), 2)
+    # Detect silhouettes in frame. Adjust scale based on camera location.
+    # winStride is the sliding window step size coordinates.
+    # A > scale val evals < layers, t.f. it runs faster but less accurate.
+    # weights is the confidence val returned from SVG per detection.
+    (bodyRects, weights) = hog.detectMultiScale(gray, winStride=(4, 4),
+                                                padding=(8, 8), scale=1.05)
 
-    # apply non-maxima suppression to the bounding boxes using a
-    # fairly large overlap threshold to try to maintain overlapping
-    # boxes that are still people
-    rects = np.array([[x, y, x + w, y + h] for (x, y, w, h) in rects])
-    pick = non_max_suppression(rects, probs=None, overlapThresh=0.65)
+    # Draw bounding boxes on detected regions of the clone frame.
+    for (x, y, w, h) in bodyRects:
+        cv2.rectangle(frameClone, (x, y), (x + w, y + h), (0, 0, 255), 2)
 
-    # draw the final bounding boxes
+    # Apply non-maxima suppression to bounding boxes using a large overlap
+    # thresh to try to maintain overlapping boxes.
+    bodyRects = np.array([[x, y, x + w, y + h] for (x, y, w, h) in bodyRects])
+    pick = non_max_suppression(bodyRects, probs=None, overlapThresh=0.65)
+
+    # Draw the final bounding boxes on the clone.
     for (xA, yA, xB, yB) in pick:
-        cv2.rectangle(image, (xA, yA), (xB, yB), (0, 255, 0), 2)
+        cv2.rectangle(frameClone, (xA, yA), (xB, yB), (0, 255, 0), 2)
+        text = 'Silhouette'
 
-    # show some information on the number of bounding boxes
-    filename = imagePath[imagePath.rfind("/") + 1:]
-    print("[INFO] {}: {} original boxes, {} after suppression".format(
-        filename, len(rects), len(pick)))
+    # Display data RE: # of bounding boxes.
+    print("{} original boxes, {} after suppression".format(
+          len(bodyRects), len(pick)))
+    ts = timestamp.strftime("%A %d %B %Y %I:%M:%S%p")
+    cv2.putText(frameClone, "Sector: {}".format(text), (10, 20),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+    cv2.putText(frameClone, ts, (10, frame.shape[0] - 10),
+                cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
 
-    # show the output images
-    cv2.imshow("Before NMS", orig)
-    cv2.imshow("After NMS", image)
-    cv2.waitKey(0)
+    # Display live preview for the frames.
+    # Verify whether the frames should be displayed to screen.
+    if conf["show_video"]:
+        cv2.imshow("Silhouette", frameClone)
+        key = cv2.waitKey(1) & 0xFF
+
+        # Pressing 'q' at anytime to terminate and exit.
+        if key == ord("q"):
+            break
+
+    # Clear stream in preparation for the next frame.
+    rawCapture.truncate(0)
+
+    # cv2.imshow("Before NMS", orig)
+    # cv2.imshow("After NMS", image)
+    # cv2.waitKey(0)
 
 # Previous work. Ignore.
 # # import the necessary packages
