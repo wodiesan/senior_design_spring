@@ -9,7 +9,7 @@ Stand-alone human silhouette detection through HOG + Linear SVM.
 Utilizes the Raspberry Pi 2 camera module for detection.
 """
 
-from __future__ import print_function
+#from __future__ import print_function
 from imutils.object_detection import non_max_suppression
 from imutils import paths
 from picamera.array import PiRGBArray
@@ -18,6 +18,10 @@ import numpy as np
 import argparse
 import imutils
 import cv2
+import datetime
+import json
+import time
+import warnings
 
 # Front matter.
 __author__ = "Sze 'Ron' Chau"
@@ -31,7 +35,7 @@ __status__ = "Prototype"
 
 # Construct the argument parse.
 ap = argparse.ArgumentParser()
-ap.add_argument("c", "--conf", required=True, help="JSON camera config.")
+ap.add_argument("-c", "--conf", required=True, help="JSON camera config.")
 args = vars(ap.parse_args())
 
 # Supress expected warning and access camera config file.
@@ -43,7 +47,7 @@ camera = PiCamera()
 camera.resolution = tuple(conf["resolution"])
 camera.framerate = conf["fps"]
 camera.rotation = conf["rotation"]
-# print 'Initializing camera module.'
+print 'Initializing camera module.'
 
 # Complete init for camera.
 rawCapture = PiRGBArray(camera, size=tuple(conf["resolution"]))
@@ -60,13 +64,14 @@ for f in camera.capture_continuous(rawCapture, format="bgr",
     # Grab raw numpy array representing the img.
     # Init timestamp and on-screen status text.
     frame = f.array
+    # frameClone = frame.copy()
     timestamp = datetime.datetime.now()
     text = "Clear"
 
     # Resize frame, preprocess to grayscale and Gaussian blur.
     frame = imutils.resize(frame, width=conf["frame_width"])
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    gray = cv2.GaussianBlur(gray, (21, 21), 0)
+    # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    gray = cv2.GaussianBlur(frame, (21, 21), 0)
 
 # STATIC IMAGES: Loop over the image paths.
 # for imagePath in paths.list_images(args["images"]):
