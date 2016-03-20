@@ -1,9 +1,8 @@
 # Home Surveillance System
-A computer vision home surveillance system based on the Raspberry Pi 2.
+A computer vision home surveillance system based on the Raspberry Pi 2. Utilizes the Raspberry Pi CSI camera module and OpenCV framework.
 
-Utilizes the Raspberry Pi CSI camera module and OpenCV framework.
-Part of ELEC4500 Senior Electronic Design I, Spring 2016
-Dept. of Electrical Engineering and Technology
+Part of ELEC4500 Senior Electronic Design I, Spring 2016  
+Dept. of Electrical Engineering and Technology  
 Wentworth Institute of Technology
 
 ## What is the Home Surveillance System?
