@@ -1,0 +1,121 @@
+\section{Enclosures}
+\label{sec:enclosure}
+
+During the Proposal Phase the design included a MobileApp Systems Proto Armour Enclosure for the RPi2. During cost analysis, it was quickly concluded that--while beneficial at the proof of concept stage--this component would not meet the requirements for a production-level product. The choice of the Proto Armour was based on the enclosure's robust aircraft-grade aluminum, support for the camera module, and numerous mounting holes at each side of the case. The Proto Armour, however, wasn't designed to be weatherproof. In addition, the cost per enclosure at \$45 per enclosure represents close to 30\% of the direct materials cost per unit. This high cost disqualified the Proto Armour Enclosure for purposes beyond proof of concept designs.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.475\textwidth}
+        \includegraphics[width=\textwidth]{pics/Case_Proto1.jpg}
+        \caption{External view.}
+        \label{fig:ProtoCase1}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.475\textwidth}
+        \includegraphics[width=\textwidth]{pics/Case_Proto2.jpg}
+        \caption{Internal view.}
+        \label{fig:ProtoCase2}
+    \end{subfigure}
+    \caption{Proto Armour Enclosure by MobileApp Systems.}\label{fig:ProtoCase0}
+\end{figure}
+
+%---------------------------------------------------------------------
+%           CCTV
+%---------------------------------------------------------------------
+\subsection{CCTV Weatherproof Enclosure}
+
+A strong contender was a generic 15 in. length CCTV Weatherproof Enclosure. This enclosure is primarily aluminum is sealed with heavy duty rubber to prevent water intake. Priced around \$25, this enclosure is an improvement from the Proto Armour. This candidate, however, was rejected for several reasons:
+
+\begin{singlespace}
+\begin{enumerate}
+    \item Enclosure is larger and heavier than necessary for the system, making inconspicuous installation unlikely.
+    \item The large viewing window and the distance where the camera is mounted increases light pollution from the surrounding environment as well as the RPi2 diagnostic LEDs.
+    \item LEDs inside: The viewing window isn't wide enough for both the camera module and Night Vision board.
+    \item LEDs outside: A secondary enclosure will be required to custom mount onto the CCTV enclosure.
+    \item While not required, additional enclosures for the RPi2 and the camera module would be recommended, thereby increasing the cost to the level of the Proto Armour Enclosure.
+\end{enumerate}
+\end{singlespace}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.475\textwidth}
+        \includegraphics[width=\textwidth]{pics/Case_CCTV1.jpg}
+        \caption{External view.}
+        \label{fig:CCTVCase1}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.475\textwidth}
+        \includegraphics[width=\textwidth]{pics/Case_CCTV2.jpg}
+        \caption{Internal view.}
+        \label{fig:CCTVCase2}
+    \end{subfigure}
+    \caption{Example CCTV enclosure re-purposed for a RPi2-based security system. Haldas, Mike. \href{https://plus.google.com/u/0/photos/+MikeHaldas/albums/6086069369593277953}{Raspberry Pi Outdoor Camera Housing.}}\label{fig:CCTVCase0}
+\end{figure}
+
+%---------------------------------------------------------------------
+%           3D PRINT: RPI2
+%---------------------------------------------------------------------
+\subsection{Main System Enclosure}
+
+After careful consideration, a unanimous decision to design custom weatherproof enclosures was made based on several reasons:
+
+\begin{singlespace}
+\begin{enumerate}
+    \item A custom design would keep expenditure for enclosures within reasonable bounds. 
+    \item The enclosure can be designed so that the gap will be minimal between the camera lens and the enclosure's protective glass cover.
+    \item Separate enclosures can be designed: One for the RPi2 and one for the Night Vision board, allowing for modularity through various configurations (for example: two Night Vision Boards).
+\end{enumerate}
+\end{singlespace}
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{pics/subsystem.PNG}}
+    \caption{Various attachment configurations.}
+    \label{fig:caseConfig}
+\end{figure}
+
+%\begin{figure}[H]
+%    \centering
+%    \begin{subfigure}[b]{0.475\textwidth}
+%        \includegraphics[width=\textwidth]{pics/Case_RPi_Assembly.PNG}
+%        \caption{Assembled view.}
+%        \label{fig:RPiCase1}
+%    \end{subfigure}
+%    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+%      %(or a blank line to force the subfigure onto a new line)
+%    \begin{subfigure}[b]{0.475\textwidth}
+%        \includegraphics[width=\textwidth]{pics/Case_RPi_Exploded.PNG}
+%        \caption{Exploded view.}
+%        \label{fig:RPiCase2}
+%    \end{subfigure}
+%    \caption{CAD Model of the RPi2 outdoors enclosure.}\label{fig:RpiCase0}
+%\end{figure}
+
+The enclosures can be 3D printed for quick evaluation. The only possible issue with this method is sourcing the necessary o-rings and screws, but this won't likely be a real concern. Custom designing an enclosure for the Night Vision board improves the functionality of the Home Surveillance System during times low-ambient lighting. By focusing on modularity as a feature, each Nigh Vision enclosure will be able to mount on the top, left, and right sides of the RPi2 enclosure.
+
+
+%---------------------------------------------------------------------
+%           3D PRINT: NIGHT VISION
+%---------------------------------------------------------------------
+%\subsection{Night Vision Enclosure}
+
+%Custom designing an enclosure for the Night Vision board improves the functionality of the Home Surveillance System during times low-ambient lighting. By focusing on modularity as a feature, each Nigh Vision enclosure will be able to mount on the top, left, and right sides of the RPi2 enclosure.
+
+%\begin{figure}[H]
+%    \centering
+%    \begin{subfigure}[b]{0.475\textwidth}
+%        \includegraphics[width=\textwidth]{pics/Case_RPi_Assembly.PNG}
+%        \caption{Assembled view.}
+%        \label{fig:LEDCase1}
+%    \end{subfigure}
+%    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+%      %(or a blank line to force the subfigure onto a new line)
+%    \begin{subfigure}[b]{0.475\textwidth}
+%        \includegraphics[width=\textwidth]{pics/Case_RPi_Exploded.PNG}
+%        \caption{Exploded view.}
+%        \label{fig:LEDCase2}
+%    \end{subfigure}
+%    \caption{CAD Model of the Night Vision outdoors enclosure.}\label{fig:LEDCase0}
+%\end{figure}

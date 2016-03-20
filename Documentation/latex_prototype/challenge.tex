@@ -1,0 +1,49 @@
+\section{Challenges and Considerations}
+\label{sec:challenge}
+
+%---------------------------------------------------------------------
+%           CURRENT DRAW
+%---------------------------------------------------------------------
+\subsection{Power and USB Current Draw}
+
+It is recommended to power the system with a 5V, 2A microUSB cable power supply. Using a power supply with lower current capabilities will result in instability.
+
+\subsubsection{USB Hub}
+In addition to the 2A power supply consideration, end users that plan on attaching unrelated USB devices could potentially experience intermittent wifi connection, amongst other issues. Current draw from various USB devices was examined through the \verb|usb-devices| and \verb|lsusb -v| commands in Raspbian:
+
+\begin{table}[h]
+\centering
+\caption{Example average current draw of the Home Surveillance System with unrelated USB devices attached to the RPi2 unit.}\label{tab:current}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Device                      & Current Draw      \\ \midrule
+Raspberry Pi                & 750mA             \\
+Camera Module               & 100mA--260mA      \\
+Wifi Dongle                 & 50mA--100mA       \\
+Keyboard and Mouse Combo    & 98mA              \\
+External Hard Drive         & 750mA             \\\bottomrule
+\end{tabular}
+\end{table}
+
+While it might seem okay to run the RPi2 off of a 5V, 2A power supply, this might not be the case depending on additional USB devices unrelated to the home surveillance system. For example, a user could attach some or all of the USB devices listed in Table \ref{tab:current}. The result is an average 1.96A current draw. Without a powered hub, this setup would risk wifi stability when the user leverages the VNC server. A powered USB hub isn't necessary at the current design iteration, however, it is advised to consider one if there are plans to run other USB-based, current-hungry devices on the RPi2 unit.
+
+%---------------------------------------------------------------------
+%           CURRENT LIMITER
+%---------------------------------------------------------------------
+\subsubsection{USB Current Limiter}
+The RPi2 includes a current limiter for USB peripherals to reduce brown-outs on the main supply. The total current drawn by USB devices defaults to 600mA, but this can be increased to 1.2A, doubling the default allowance. The RPi2 proof of concept unit \verb|scrying| has been adjusted for this increase. This adjustment is found in \verb|/boot/config.txt|:
+
+\begin{centerverbatim}
+max_usb_current=1
+\end{centerverbatim}
+
+Increasing this current limit seems to result in a more stable wireless connection for remote viewing through VNC. If power-related issues occur (as indicated by the flickering red power LED on the RPi2), commenting the line out of the file should be the first step in debugging the issue.
+
+%---------------------------------------------------------------------
+%           SECURITY
+%---------------------------------------------------------------------
+\subsection{Security}
+
+The current design relies on VNC to access the RPi2 desktop remotely. The initial process to VNC from an outside network required port forwarding to a specific TCP port. This method presents a security vulnerability; by default, the transmitted data isn't encrypted. This becomes a concern when accessing the system outside of the home network.
+
+Weaved, a cloud-based network platform, was chosen as a safeguard for secure access through VNC and HTTP \cite{weaved}.

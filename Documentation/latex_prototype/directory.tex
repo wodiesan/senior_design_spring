@@ -1,0 +1,33 @@
+\section{Software Directory}
+\label{sec:directory}
+
+\begin{center}
+
+\tikzstyle{dir}=[draw=blue,fill=blue!30]
+\tikzstyle{every node}=[draw=black,thick,anchor=west]
+\tikzstyle{selected}=[draw=red,fill=red!30]
+\tikzstyle{optional}=[dashed,fill=gray!50]
+\begin{tikzpicture}[%
+  grow via three points={one child at (0.5,-0.7) and
+  two children at (0.5,-0.7) and (0.5,-1.4)},
+  edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
+  \node {senior\_design\_spring}
+    child { node [dir]{cv\_methods\_isolated}}		
+    child { node [dir]{documentation}}
+    child { node [dir]{enclosures}}
+    child { node [dir] {night\_sensor}
+      child { node [dir]{fritzing\_design}}
+      child { node {night\_feature.py}}
+      child { node {night\_feature\_arduino\_testbed.ino}}
+      child { node {night\_feature\_attiny85.ino}}
+    }
+    child [missing] {}				
+    child [missing] {}				
+    child [missing] {}
+    child [missing] {}	
+    child { node {LICENSE}}			
+    child { node {README.md}}			
+    child { node {texdoc}};
+\end{tikzpicture}
+
+\end{center}

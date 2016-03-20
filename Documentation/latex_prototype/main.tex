@@ -1,0 +1,181 @@
+\documentclass[12pt]{article}
+%\usepackage{fontspec}
+%\usepackage[utf8]{inputenc}
+
+\usepackage[margin=1in]{geometry}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{float}
+\usepackage{xfrac}
+%\usepackage{subfig}
+\usepackage{subcaption}
+\captionsetup{belowskip=12pt,aboveskip=4pt}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{csquotes}
+
+\usepackage{amsmath}
+\usepackage{mathptmx}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{varwidth}
+\usepackage{verbatim}
+
+\newenvironment{centerverbatim}{%
+  \par
+  \centering
+  \varwidth{\linewidth}%
+  \verbatim
+}{%
+  \endverbatim
+  \endvarwidth
+  \par
+}
+
+\usepackage{gensymb}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+
+\usepackage{listings}
+\usepackage{color}
+\definecolor{rp}{rgb}{0.47, 0.32, 0.66}
+\definecolor{rb}{rgb}{0.25, 0.41, 0.88}
+\definecolor{tp}{rgb}{0.4, 0.01, 0.24}
+\definecolor{lightgrey}{rgb}{0.9,0.9,0.9}
+\definecolor{darkgreen}{rgb}{0,0.6,0}
+
+%---------------------------------------------------------------------
+%           FOOTER
+%---------------------------------------------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\cfoot{Confidential $\mid$ ELEC4500-2016-PROTO Rev. 1}
+\rfoot{\thepage}
+
+\usepackage{multicol} % Required for splitting text into multiple columns
+\setlength{\columnsep}{1cm}
+\usepackage[toc]{glossaries}
+\usepackage[protrusion=true,expansion=true]{microtype} % Improves spacing
+%\usepackage[bf,sf,center]{titlesec} % Required for modifying section titles - bold, sans-serif, centered
+%\usepackage{fancyhdr} % Required for modifying headers and footers
+%\usepackage{subfiles}
+
+\usepackage[toc,page]{appendix}
+
+%\makeglossaries
+%\input{./glossary.tex}
+
+\begin{document}\thispagestyle{empty}
+\pagenumbering{gobble}
+\input{./title.tex}
+\titleTMB
+\newpage
+\doublespacing
+
+
+%----------------------------------------------------------------------
+% Per S. Grenquist 2013 Publication RE: Senior Design Prototype Phase
+%----------------------------------------------------------------------
+%       Prototype Manufacturing Phase 
+% After having all of their engineering calculations examined and
+% certified, the students then start to build their prototype and
+% design their production methods. 
+
+%       Prototype 
+% The culmination of the prototype Manufacturing phase is the 
+% presentation of a working prototype. 
+
+%       Production Design 
+% The students also must provide a detailed description of the
+% production process both for the prototype, as well as for larger
+% production runs.
+
+%      *Project Development*
+% The Project Development section of each of the four phases of the
+% BDS is used to assess how well the student group has progressed
+% through the development of the project. The question asked at each
+% of the developmental phases is whether the student design group is
+% ahead of schedule and below budget. They're great for that section
+% of the phase is dependent on how they answer that question. It is
+% common to all of the four phases included in the PBDS.*
+
+%----------------------------------------------------------------------
+% WORD BANK
+%----------------------------------------------------------------------
+% eludicate
+
+%----------------------------------------------------------------------
+% Abstract and Table of Contents
+%----------------------------------------------------------------------
+\begin{abstract}\thispagestyle{empty}
+
+A technical proof of concept for a lightweight, customizable, and scalable home surveillance system is presented in this documentation. This phase primarily of evaluating several object detection methods--in day and low ambient lighting conditions--for humans and vehicles. 
+%Technical specifications, i.e. calculations, breadboard diagrams, schematics, PCB layout design, and program flowcharts for a Raspberry Pi 2-based home surveillance system is outlined in this document. This system is designed to allow a homeowner to record digital video--through low-ambient lighting environments--when an adjustable motion threshold is surpassed. The system will include human and vehicle detection features. Recorded videos will be cataloged by the object type that activated the camera, i.e. human, vehicle, and others. This proposed functionality will allow a homeowner to quickly access their database of video data through categorical ``bookmarks'' based on metadata such as date, time, and type of object. The result is a lightweight, customizable, and scalable home surveillance system that remains inexpensive for storage. 
+
+\end{abstract}
+
+\newpage
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+\newpage
+
+%---------------------------------------------------------------------
+% Intro
+%---------------------------------------------------------------------
+\pagenumbering{arabic}
+
+\addcontentsline{toc}{section}{\nameref{sec:intro}}
+\input{intro}
+
+\newpage
+\addcontentsline{toc}{section}{\nameref{sec:creds}}
+\input{creds}
+
+\newpage
+\addcontentsline{toc}{section}{\nameref{sec:pcb}}
+\input{pcb}
+
+\newpage
+\addcontentsline{toc}{section}{\nameref{sec:human}}
+\input{human}
+
+\newpage
+\addcontentsline{toc}{section}{\nameref{sec:enclosure}}
+\input{enclosure}
+
+\newpage
+\addcontentsline{toc}{section}{\nameref{sec:challenge}}
+\input{challenge}
+
+\newpage
+\addcontentsline{toc}{section}{\nameref{sec:projDev}}
+\input{projDev}
+
+%\newpage
+%\addcontentsline{toc}{section}{\nameref{sec:directory}}
+%\input{directory}
+
+\newpage
+%\begin{multicols}{2}
+%\begin{onehalfspacing}
+%\printglossary
+%\end{onehalfspacing}
+%\end{multicols}
+
+%\newpage
+%\section{Appendix}
+%\pagenumbering{roman}
+
+%\input{glossary}
+
+\addcontentsline{toc}{section}{References}
+\input{bibl}
+
+\end{document}

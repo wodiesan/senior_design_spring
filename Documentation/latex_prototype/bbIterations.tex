@@ -1,0 +1,98 @@
+\section{Breadboard Prototyping Iterations}
+\label{sec:bbIter}
+
+Due to anticipated difficulties in driving the IR LEDs, there are several iterations of design choices for the system.
+
+%---------------------------------------------------------------------
+%   RPI2
+%---------------------------------------------------------------------
+\subsection{RPi2 GPIO-based Design}
+
+In this design, an analog-to-digital (ADC) integrated circuit is added in order to transfer the data from the analog sensor to the RPi2.
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{ChauSze_SeniorDesign1_BBRpi.jpg}}
+    \caption{Fritzing breadboard diagram of the RPi2 design.}
+\end{figure}
+
+%---------------------------------------------------------------------
+%   ARDUINO
+%---------------------------------------------------------------------
+\subsection{Arduino-based Design}
+
+The ``Arduino-based design'', in actuality, would be an Atmel AVR series microcontroller. In this design, the Arduino Uno Rev. 3--based on the ATmega328--is utilized as a quick evaluation on whether hosting the LEDs on a microcontroller (and subsequent 5V source) would better serve the purposes of night illumination for the camera. 
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.495\textwidth}
+        \includegraphics[width=\textwidth]{ChauSze_SeniorDesign1_BBUno.jpg}
+        \caption{Fritzing breadboard diagram.}
+        \label{fig:BBUno1}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{ChauSze_ElectronicDesign1_BBProto.jpg}
+        \caption{Physical breadboard prototype.}
+        \label{fig:BBUno2}
+    \end{subfigure}
+    \caption{Prototyping the Night Vision block on an Arduino Uno Rev. 3.}\label{fig:BBUno}
+\end{figure}
+
+%---------------------------------------------------------------------
+%   ATTINY85
+%---------------------------------------------------------------------
+\subsection{ATtiny85-based Design}
+
+The latest iteration takes the Arduino-based design and ports it over to an ATtiny85 microcontroller. Manufacturing costing for 10,000 units is the primary rationale for this decision. Since the microcontroller would only be responsible for the light sensor and the LEDs, a microcontroller from the megaAVR family would be underutilized whereas one from the tinyAVR family contains all that is necessary to host the Night Vision block.
+
+\begin{table}[H]
+\centering
+\caption{Comparison between microcontroller candidates for the Night Vision block.}
+\label{mcuTable}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Microcontroller & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}Program\\ Space\end{tabular}} & \multicolumn{1}{c}{I/O Pins} & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}Price Per Unit \\ for 10K Units\end{tabular}} \\ \midrule
+ATmega328       & 32K                                                                         & 23                           & 1.670                                                                                       \\
+ATtiny85        & 8K                                                                          & 6                            & 0.748                                                                                       \\ \bottomrule
+\end{tabular}
+\end{table}
+
+For the purposes of a manufacturing run, the cost of an ATtiny85 is also significantly less than utilizing an ADC IC to connect with the RPi2. With a design based on the ATtiny85, the RPi2 can focus solely on processing computer vision tasks.
+
+\begin{table}[H]
+\centering
+\caption{Comparison between ADC IC candidates for the Night Vision block.}
+\label{adcTable}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+ADC     & \multicolumn{1}{c}{Resolution} & \multicolumn{1}{c}{Channels} & \multicolumn{1}{c}{\begin{tabular}[c]{@{}c@{}}Price Per Unit \\ for 10K Units\end{tabular}} \\ \midrule
+MCP3008 & 10-bit                         & 8                            & 1.660                                                                                       \\
+MCP3002 & 10-bit                         & 2                            & 1.350                                                                                       \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.475\textwidth}
+        \includegraphics[width=\textwidth]{ChauSze_SeniorDesign1_Tiny1_BB.PNG}
+        \caption{Fritzing breadboard diagram.}
+        \label{fig:BBTiny1}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.475\textwidth}
+        \includegraphics[width=\textwidth]{ChauSze_SeniorDesign1_IRBB.PNG}
+        \caption{Physical breadboard prototype.}
+        \label{fig:BBTiny2}
+    \end{subfigure}
+    \caption{Prototyping the Night Vision block on an ATtiny85, first iteration.}\label{fig:BBTiny}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=0.75\textwidth]{ChauSze_SeniorDesign1_Tiny2_BB.PNG}}
+    \caption{Fritzing breadboard diagram of the ATtiny85 design, second iteration.}
+\end{figure}
+

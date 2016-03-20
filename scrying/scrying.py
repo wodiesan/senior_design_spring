@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 """
-Stand-alone human silhouette detection through HOG + Linear SVM.
+Main file for a home monitoring system on the Raspberry Pi 2.
 
+Requires --conf (JSON) and --face (XML) arguments.
 Utilizes the Raspberry Pi 2 camera module and OpenCV framework.
 Part of ELEC4500 Senior Electronic Design I, Spring 2016
 Dept. of Electrical Engineering and Technology
@@ -12,6 +13,7 @@ import datetime
 import json
 import sys
 import time
+from threading import Thread
 import warnings
 
 import cv2

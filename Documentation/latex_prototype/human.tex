@@ -1,0 +1,113 @@
+\section{Facial Detection}
+\label{sec:human}
+
+%----------------------------------------------------------------------
+%           FACE DETECTION
+%----------------------------------------------------------------------
+%\subsection{Face Detection}
+
+Haar Cascade Classifiers is the method chosen to detect human faces. 
+
+\subsection{Indoors Facial Detection: Environment}
+
+The indoor evaluation environment was a 12x20 ft room. The room was lit with two overhead, bare T5 fluorescent bulbs in parallel, outputting approximately 3500K neutral white. The primary evaluation distance was 4 ft, however, 8 ft and 10 ft were also evaluated for scale invariance.
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=0.75\textwidth]{pics/eval_in_dist.jpg}}
+    \caption{Indoor evaluation environment. The prototype is on the right edge of the TV stand. The white plastic bag is approximately 4 ft from it, and Nelson's position is approximately 8 ft away.}
+    \label{fig:dist}
+\end{figure}
+
+
+\subsection{Indoors Facial Detection: Head Wear}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.31\textwidth}
+        \includegraphics[width=\textwidth]{pics/face1.jpg}
+        \caption{Sunglasses.}
+        \label{fig:face1}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.31\textwidth}
+        \includegraphics[width=\textwidth]{pics/face2.jpg}
+        \caption{Hoodie and sunglasses.}
+        \label{fig:face2}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.31\textwidth}
+        \includegraphics[width=\textwidth]{pics/face3.jpg}
+        \caption{Baseball cap.}
+        \label{fig:face3}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.31\textwidth}
+        \includegraphics[width=\textwidth]{pics/face4.jpg}
+        \caption{Paratrooper beret.}
+        \label{fig:face4}
+    \end{subfigure}
+    ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+      %(or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.31\textwidth}
+        \includegraphics[width=\textwidth]{pics/face5.jpg}
+        \caption{Advanced Combat Helmet.}
+        \label{fig:face5}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.31\textwidth}
+        \includegraphics[width=\textwidth]{pics/face6.jpg}
+        \caption{Shemagh.}
+        \label{fig:face6}
+    \end{subfigure}
+    \caption{Indoor facial detection evaluated through various head wear at approximately 3-4 ft distance.}\label{fig:face_indoors}
+\end{figure}
+
+\subsection{Indoors Facial Detection: Distance}
+
+Figure \ref{fig:invariant} demonstrates that the system is able to detect human faces at 3 ft., 8 ft., and 10 ft. The dog in the frame was disregarded as this specific evaluation only searched for human faces.
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=0.70\textwidth]{pics/eval_in_invariant.jpg}}
+    \caption{Positive detection for three humans at different distances.}
+    \label{fig:invariant}
+\end{figure}
+
+%\subsubsection{Daytime Outdoors Facial Detection}
+
+%\subsubsection{Nighttime Outdoors Facial Detection}
+\subsection{Nighttime Facial Detection}
+
+Low-ambient lighting conditions proved to be a formidable and admittedly underestimated challenge. The success rate for human facial detection remains low, hovering around 20\% with the 3-IR LED Night Vision board activated. The chance for a positive detection increases when the distance from the Night Vision board decreases. At approximately 3 ft., the success rate increases to approximately 40\%.
+
+Plans to increase success rate includes:
+\begin{singlespace}
+\begin{enumerate}
+    \item Modifying the intensity of the IR LEDs.
+    \item Increasing the numbers of IR LEDs to the Night Vision board.
+    \item Increasing the numbers of Night Vision boards.
+\end{enumerate}
+\end{singlespace}
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{pics/eval_out_nightIR_face2.jpg}}
+    \caption{Positive facial detection at night, IR LEDs active.}
+    \label{fig:nightRon1}
+\end{figure}
+
+%----------------------------------------------------------------------
+%           Motion DETECTION
+%----------------------------------------------------------------------
+%\subsection{Motion Detection}
+
+
+%----------------------------------------------------------------------
+%           SILHOUETTE: HOG
+%----------------------------------------------------------------------
+%\subsection{Human Silhouette Detection}
+
+%\subsubsection{Preliminary Indoors Silhouette Detection}
+
+%\subsubsection{Daytime Outdoors Silhouette Detection}
+
+%\subsubsection{Nighttime Outdoors Silhouette Detection}

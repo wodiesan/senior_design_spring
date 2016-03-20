@@ -1,0 +1,16 @@
+\section{Introduction}
+\label{sec:intro}
+
+The Home Surveillance System is divided into two subsystems: a Raspberry Pi 2 with a camera module that performs computer vision and a night vision circuit comprised of an ambient light sensor and an array of IR LEDs. These two subsystems operate separately, allowing the user to be selective in their home monitoring configuration. %While custom enclosures are being developed that will allow both subsystems to couple
+
+The Home Surveillance System--at its current iteration--is capable of detecting human through their frontal and side facial features. Motion detection runs continuously and acts as the idling state. Once motion is detected in the frame, the system isolates the sections. Finally, it seeks out human faces in the bounded through Haar-like features--a process pioneered by Viola-Jones \cite{ViolaJones}.
+
+\begin{figure}[H]
+    \centering
+    \makebox[\textwidth][c]{\includegraphics[width=1\textwidth]{pics/eval_in_remote.jpg}}
+    \caption{Remote access to the livestream through VNC.}
+    \label{fig:remote}
+\end{figure}
+
+The user is able to view a livestream of the camera through an encrypted VNC connection, allowing for secure access within or without the home network. Figure \ref{fig:remote}, shows a screen shot of the proof of concept's livestream. This was taken from A. Martinez's laptop, which was connected to the RPi2 from an outside network.
+
