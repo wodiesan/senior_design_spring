@@ -2,7 +2,7 @@
 """
 Main file for a home monitoring system on the Raspberry Pi 2.
 
-Requires --conf (JSON) and --face (XML) arguments.
+Requires --conf (JSON) and --car and --face (XML's) arguments.
 Utilizes the Raspberry Pi 2 camera module and OpenCV framework.
 Part of ELEC4500 Senior Electronic Design I, Spring 2016
 Dept. of Electrical Engineering and Technology
@@ -16,9 +16,8 @@ import time
 from threading import Thread
 import warnings
 
-# Path added to access default site packages on RPi2.
+# Path added to access default site packages (cv2) on RPi2.
 sys.path.append('/usr/local/lib/python2.7/site-packages')
-
 import cv2
 import scrying_utils.init_logger as scrying_log
 import scrying_utils.preprocessing_func as prepro
@@ -27,9 +26,6 @@ from imutils.object_detection import non_max_suppression
 import numpy as np
 from picamera.array import PiRGBArray
 from picamera import PiCamera
-
-# Path added to access default site packages on RPi2.
-# sys.path.append('/usr/local/lib/python2.7/site-packages')
 
 # Front matter.
 __author__ = "Sze 'Ron' Chau"
@@ -48,15 +44,25 @@ logger.debug('Init logging to console and files successful.')
 # Construct the argument parse.
 logger.debug('Parsing command-line arguments.')
 ap = argparse.ArgumentParser()
-ap.add_argument("-c", "--conf", required=True, help="JSON camera config.")
+ap.add_argument("-c", "--conf", required=True, help="JSON camera config path.")
+ap.add_argument("-f", "--face", required=True, help="Face Haar path.")
+ap.add_argument("-v", "--vehi", required=True, help="Vehicle Haar path.")
 args = vars(ap.parse_args())
+
+# Alert the user if any of the command-line options are missing.
+if not args.conf:
+    logger.critical('Unable to locate JSON config file. Exiting.')
+elif not args.face:
+    logger.error('No Haar facial classifer found. Skipping facial detect.')
+elif not args.vehi:
+    logger.error('No Haar vehicle classifier found. Skipping vehicle detect.')
 
 # Supress expected warnings and access camera config file.
 warnings.filterwarnings("ignore")
 conf = json.load(open(args["conf"]))
 logger.debug('Command-line arguments loaded.')
 
-# Populate JSON camera config.
+# Init camera mocule with JSON config file.
 logger.debug('Init camera module.')
 camera = PiCamera()
 camera.resolution = tuple(conf["480p"])
@@ -66,7 +72,9 @@ camera.rotation = conf["rotation"]
 # Complete init for camera.
 rawCapture = PiRGBArray(camera, size=tuple(conf["480p"]))
 time.sleep(conf["camera_warmup_time"])
-logger.debug('Begin analyzing video stream.')
+logger.debug('\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'
+             '|          Begin analyzing video stream.           |\n'
+             '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n')
 
 # Init HOG detector, set SVM to pre-trained human silhouette detector.
 hog = cv2.HOGDescriptor()
@@ -86,8 +94,6 @@ for f in camera.capture_continuous(rawCapture, format="bgr",
     frame = imutils.resize(frame, width=conf["width_480p"])
     # gray = prepro.grayscale(frame)
     gray = prepro.gauss(frame, (21, 21), 0)
-    # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    # gray = cv2.GaussianBlur(frame, (21, 21), 0)
 
     # Save a clone of the frame before preprocessing. Used for live preview.
     frameClone = frame.copy()
@@ -143,12 +149,12 @@ for f in camera.capture_continuous(rawCapture, format="bgr",
 
     # Verify whether the frames should be displayed to screen.
     if conf["show_video"]:
-        cv2.imshow("Silhouette", frameClone)
+        cv2.imshow("Scrying", frameClone)
         key = cv2.waitKey(1) & 0xFF
 
         # Pressing 'q' at anytime to terminate and exit.
         if key == ord("q"):
-            logger.debug('User terminated program.')
+            logger.debug('User terminated program. Exiting.')
             break
 
     # Clear stream in preparation for the next frame.
