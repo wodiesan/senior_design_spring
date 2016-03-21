@@ -5,8 +5,15 @@
 	"camera_warmup_time": 2.5,
 	"delta_thresh": 5,
 	"rotation": 270,
-	"resolution": [1280, 720],
+	"720p": [1280, 720],
+	"480p": [640, 480],
+	"width_720p": 720,
+	"width_480p": 720,
 	"fps": 10,
-	"frame_width": 720,
-	"min_area": 5000
+	"min_area": 5000,
+	"font_sector": 0.5,
+	"font_time": 0.5,
+	"red": [0, 0, 255],
+	"green": [0, 255, 0],
+	"tyrian": [60, 2, 102]
 }

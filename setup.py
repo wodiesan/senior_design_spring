@@ -41,10 +41,8 @@ setup(
     license='The MIT License',
     author='Sze Ron Chau',
     tests_require=['pytest'],
-    install_requires=['OpenCV>=3.0',
-                      'libavcodec>=56.1.0',
-                      'libx264',
-                      'libGTK>=2.0-dev',
+    install_requires=['imutils>=0.3.4',
+                      'numpy>=1.10.4'
                       ],
     cmdclass={'test': PyTest},
     author_email='wodiesan@gmail.com',

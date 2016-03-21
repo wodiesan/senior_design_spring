@@ -49,10 +49,6 @@ coverage.xml
 *.mo
 *.pot
 
-# Django stuff:
-*.log
-local_settings.py
-
 # Flask instance folder
 instance/
 
@@ -71,15 +67,9 @@ target/
 # pyenv
 .python-version
 
-# celery beat schedule file
-celerybeat-schedule
-
 # dotenv
 .env
 
 # virtualenv
 venv/
 ENV/
-
-# Spyder project settings
-.spyderproject
