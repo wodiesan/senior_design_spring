@@ -45,8 +45,10 @@ logger.debug('Init logging to console and files successful.')
 logger.debug('Parsing command-line arguments.')
 ap = argparse.ArgumentParser()
 ap.add_argument("-c", "--conf", required=True, help="JSON camera config path.")
-ap.add_argument("-f", "--face", action='store_true', required=False, help="Face Haar path.")
-ap.add_argument("-v", "--vehi", action='store_true', required=False, help="Vehicle Haar path.")
+ap.add_argument("-f", "--face", action='store_true', required=False,
+                help="Face Haar path.")
+ap.add_argument("-v", "--vehi", action='store_true', required=False,
+                help="Vehicle Haar path.")
 args = vars(ap.parse_args())
 
 # Alert the user if any of the optional command-line options are missing.
@@ -104,12 +106,12 @@ for f in camera.capture_continuous(rawCapture, format="bgr",
                                                 padding=(8, 8), scale=1.05)
 
     # Draw bounding boxes on detected regions of the clone frame.
-    for (x, y, w, h) in bodyRects:
-        cv2.rectangle(frameClone,
-                      (x, y),
-                      (x + w, y + h),
-                      tuple(conf["green"]),
-                      1)
+    # for (x, y, w, h) in bodyRects:
+    #     cv2.rectangle(frameClone,
+    #                   (x, y),
+    #                   (x + w, y + h),
+    #                   tuple(conf["green"]),
+    #                   1)
 
     # Apply non-maxima suppression to bounding boxes using a large overlap
     # thresh to try to maintain overlapping boxes.
