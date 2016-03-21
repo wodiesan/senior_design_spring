@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/wodiesan/senior_design_spring/blob/master/documentation/latex_misc/scrying_logo.png" alt="Scrying Logo"/>
+  <img src="https://github.com/wodiesan/senior_design_spring/blob/master/documentation/latex_misc/scrying_logo.png" alt="Scrying Logo" width="122" height="277" />
 </p>
 
 # Scrying

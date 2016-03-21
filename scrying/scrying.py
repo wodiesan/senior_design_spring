@@ -45,16 +45,14 @@ logger.debug('Init logging to console and files successful.')
 logger.debug('Parsing command-line arguments.')
 ap = argparse.ArgumentParser()
 ap.add_argument("-c", "--conf", required=True, help="JSON camera config path.")
-ap.add_argument("-f", "--face", required=True, help="Face Haar path.")
-ap.add_argument("-v", "--vehi", required=True, help="Vehicle Haar path.")
+ap.add_argument("-f", "--face", action='store_true', required=False, help="Face Haar path.")
+ap.add_argument("-v", "--vehi", action='store_true', required=False, help="Vehicle Haar path.")
 args = vars(ap.parse_args())
 
-# Alert the user if any of the command-line options are missing.
-if not args.conf:
-    logger.critical('Unable to locate JSON config file. Exiting.')
-elif not args.face:
+# Alert the user if any of the optional command-line options are missing.
+if not args['face']:
     logger.error('No Haar facial classifer found. Skipping facial detect.')
-elif not args.vehi:
+if not args['vehi']:
     logger.error('No Haar vehicle classifier found. Skipping vehicle detect.')
 
 # Supress expected warnings and access camera config file.
