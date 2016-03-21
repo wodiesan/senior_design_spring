@@ -1,0 +1,27 @@
+2016-03-20 20:24:51,353 - __main__ - DEBUG - Init logging to console and files successful.
+2016-03-20 20:24:51,355 - __main__ - DEBUG - Parsing command-line arguments.
+2016-03-20 20:24:51,368 - __main__ - DEBUG - Command-line arguments loaded.
+2016-03-20 20:24:51,370 - __main__ - DEBUG - Init camera module.
+2016-03-20 20:28:41,007 - __main__ - DEBUG - Init logging to console and files successful.
+2016-03-20 20:28:41,009 - __main__ - DEBUG - Parsing command-line arguments.
+2016-03-20 20:28:41,023 - __main__ - DEBUG - Command-line arguments loaded.
+2016-03-20 20:28:41,025 - __main__ - DEBUG - Init camera module.
+2016-03-20 20:28:44,153 - __main__ - DEBUG - Begin analyzing video stream.
+2016-03-20 20:29:52,315 - __main__ - DEBUG - Init logging to console and files successful.
+2016-03-20 20:29:52,317 - __main__ - DEBUG - Parsing command-line arguments.
+2016-03-20 20:29:52,330 - __main__ - DEBUG - Command-line arguments loaded.
+2016-03-20 20:29:52,332 - __main__ - DEBUG - Init camera module.
+2016-03-20 20:29:55,461 - __main__ - DEBUG - Begin analyzing video stream.
+2016-03-20 20:31:24,855 - __main__ - DEBUG - User terminated program.
+2016-03-20 20:36:05,090 - __main__ - DEBUG - Init logging to console and files successful.
+2016-03-20 20:36:05,092 - __main__ - DEBUG - Parsing command-line arguments.
+2016-03-20 20:36:05,106 - __main__ - DEBUG - Command-line arguments loaded.
+2016-03-20 20:36:05,107 - __main__ - DEBUG - Init camera module.
+2016-03-20 20:36:08,238 - __main__ - DEBUG - Begin analyzing video stream.
+2016-03-20 20:37:25,165 - __main__ - DEBUG - User terminated program.
+2016-03-20 20:37:47,846 - __main__ - DEBUG - Init logging to console and files successful.
+2016-03-20 20:37:47,848 - __main__ - DEBUG - Parsing command-line arguments.
+2016-03-20 20:37:47,862 - __main__ - DEBUG - Command-line arguments loaded.
+2016-03-20 20:37:47,864 - __main__ - DEBUG - Init camera module.
+2016-03-20 20:37:50,990 - __main__ - DEBUG - Begin analyzing video stream.
+2016-03-20 20:39:14,317 - __main__ - DEBUG - User terminated program.

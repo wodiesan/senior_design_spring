@@ -16,6 +16,9 @@ import time
 from threading import Thread
 import warnings
 
+# Path added to access default site packages on RPi2.
+sys.path.append('/usr/local/lib/python2.7/site-packages')
+
 import cv2
 import scrying_utils.init_logger as scrying_log
 import scrying_utils.preprocessing_func as prepro
@@ -26,7 +29,7 @@ from picamera.array import PiRGBArray
 from picamera import PiCamera
 
 # Path added to access default site packages on RPi2.
-sys.path.append('/usr/local/lib/python2.7/site-packages')
+# sys.path.append('/usr/local/lib/python2.7/site-packages')
 
 # Front matter.
 __author__ = "Sze 'Ron' Chau"
@@ -36,7 +39,7 @@ __maintainer__ = "Sze 'Ron' Chau"
 __email__ = "wodiesan@gmail.com"
 
 # Init logging to console and files.
-logger_rpi = '~/senior_design_project/scrying/history/'
+logger_rpi = 'history/'
 user_log = 'log_scrying_user.log'
 dev_log = 'log_scrying_dev.log'
 logger = scrying_log.init_logger(__name__, logger_rpi, user_log, dev_log)
@@ -56,12 +59,12 @@ logger.debug('Command-line arguments loaded.')
 # Populate JSON camera config.
 logger.debug('Init camera module.')
 camera = PiCamera()
-camera.resolution = tuple(conf["resolution"])
+camera.resolution = tuple(conf["480p"])
 camera.framerate = conf["fps"]
 camera.rotation = conf["rotation"]
 
 # Complete init for camera.
-rawCapture = PiRGBArray(camera, size=tuple(conf["resolution"]))
+rawCapture = PiRGBArray(camera, size=tuple(conf["480p"]))
 time.sleep(conf["camera_warmup_time"])
 logger.debug('Begin analyzing video stream.')
 
@@ -80,8 +83,8 @@ for f in camera.capture_continuous(rawCapture, format="bgr",
     text = "Clear"
 
     # Resize frame, preprocess with grayscale and Gaussian blur.
-    frame = imutils.resize(frame, width=conf["frame_width"])
-    gray = prepro.cvtColor(frame)
+    frame = imutils.resize(frame, width=conf["width_480p"])
+    # gray = prepro.grayscale(frame)
     gray = prepro.gauss(frame, (21, 21), 0)
     # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # gray = cv2.GaussianBlur(frame, (21, 21), 0)
@@ -134,7 +137,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr",
                 ts,
                 (10, frame.shape[0] - 10),
                 cv2.FONT_HERSHEY_SIMPLEX,
-                conf["font_dt"],
+                conf["font_time"],
                 tuple(conf["red"]),
                 1)
 
