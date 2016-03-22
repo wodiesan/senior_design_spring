@@ -40,16 +40,16 @@ conf = json.load(open(args["conf"]))
 client = None
 
 # check to see if the Dropbox should be used
-if conf["use_dropbox"]:
-	# connect to dropbox and start the session authorization process
-	flow = DropboxOAuth2FlowNoRedirect(conf["dropbox_key"], conf["dropbox_secret"])
-	print "[INFO] Authorize this application: {}".format(flow.start())
-	authCode = raw_input("Enter auth code here: ").strip()
-
-	# finish the authorization and grab the Dropbox client
-	(accessToken, userID) = flow.finish(authCode)
-	client = DropboxClient(accessToken)
-	print "[SUCCESS] dropbox account linked"
+# if conf["use_dropbox"]:
+# 	# connect to dropbox and start the session authorization process
+# 	flow = DropboxOAuth2FlowNoRedirect(conf["dropbox_key"], conf["dropbox_secret"])
+# 	print "[INFO] Authorize this application: {}".format(flow.start())
+# 	authCode = raw_input("Enter auth code here: ").strip()
+# 
+# 	# finish the authorization and grab the Dropbox client
+# 	(accessToken, userID) = flow.finish(authCode)
+# 	client = DropboxClient(accessToken)
+# 	print "[SUCCESS] dropbox account linked"
 
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
@@ -81,7 +81,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	# resize the frame, convert it to grayscale, and blur it
 	# IMUTILS.RESIZE CHANGED FROM 500 D/T RESIZING OF PREVIEW STREAM
 	#frame = imutils.resize(frame, width=500)
-	frame = imutils.resize(frame, width=480)
+	frame = imutils.resize(frame, width=640)
 	#frame = imutils.resize(frame, width=1280)
 	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 	gray = cv2.GaussianBlur(gray, (21, 21), 0)
@@ -108,7 +108,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 		# cv2.line(frameClone, (bottomLeft, bottomY), (bottomRight, bottomY), (0, 0, 255), 3)
 		#cv2.line(frameClone, (fX, fY), (fX + fW, fY + fH), (0, 0, 255), 3)
 		cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH), (0, 255, 0), 3)
-		text = 'Encounter!'
+		text = 'Face detected!'
 
 	# Show our detected faces.
 	# cv2.imshow("Face", frameClone)
@@ -166,11 +166,11 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 	#cv2.putText(frameClone, "Sector", (10, 20),
 		cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 	cv2.putText(frameClone, ts, (10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX,
-		0.35, (0, 0, 255), 1)
+		0.5, (0, 0, 255), 1)
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	# check to see if the room is occupied
-	if text == "Encounter!":
+	if text == "Face detected!":
 		# check to see if enough time has passed between uploads
 		if (timestamp - lastUploaded).seconds >= conf["min_upload_seconds"]:
 			# increment the motion counter
@@ -180,17 +180,17 @@ for f in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True
 			# high enough
 			if motionCounter >= conf["min_motion_frames"]:
 				# check to see if dropbox sohuld be used
-				if conf["use_dropbox"]:
-					# write the image to temporary file
-					t = TempImage()
-					cv2.imwrite(t.path, frame)
+				# if conf["use_dropbox"]:
+				# 	# write the image to temporary file
+				# 	t = TempImage()
+				# 	cv2.imwrite(t.path, frame)
 
-					# upload the image to Dropbox and cleanup the tempory image
-					print "[UPLOAD] {}".format(ts)
-					path = "{base_path}/{timestamp}.jpg".format(
-						base_path=conf["dropbox_base_path"], timestamp=ts)
-					client.put_file(path, open(t.path, "rb"))
-					t.cleanup()
+				# 	# upload the image to Dropbox and cleanup the tempory image
+				# 	print "[UPLOAD] {}".format(ts)
+				# 	path = "{base_path}/{timestamp}.jpg".format(
+				# 		base_path=conf["dropbox_base_path"], timestamp=ts)
+				# 	client.put_file(path, open(t.path, "rb"))
+				# 	t.cleanup()
 
 				# update the last uploaded timestamp and reset the motion
 				# counter

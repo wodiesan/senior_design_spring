@@ -6,7 +6,7 @@
 	"delta_thresh": 5,
 	"rotation": 270,
 	"resolution": [640, 480],
-	"fps": 30,
-	"frame_width": 480,
+	"fps": 20,
+	"frame_width": 640,
 	"min_area": 5000
 }
