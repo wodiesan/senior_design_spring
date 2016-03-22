@@ -62,19 +62,26 @@ warnings.filterwarnings("ignore")
 conf = json.load(open(args["conf"]))
 logger.debug('Command-line arguments loaded.')
 
-# Init camera mocule with JSON config file.
-logger.debug('Init camera module.')
-camera = PiCamera()
-camera.resolution = tuple(conf["480p"])
-camera.framerate = conf["fps"]
-camera.rotation = conf["rotation"]
+# Init camera module with JSON config file.
+logger.debug('Initiating camera module.')
+try:
+    camera = PiCamera()
+    camera.resolution = tuple(conf["480p"])
+    camera.framerate = conf["fps"]
+    camera.rotation = conf["rotation"]
+
+except PiCamera.exc.PiCameraError:
+    logger.critical('Unable to access camera module. Exiting.')
+    sys.exit()
 
 # Complete init for camera.
 rawCapture = PiRGBArray(camera, size=tuple(conf["480p"]))
 time.sleep(conf["camera_warmup_time"])
+logger.debug('Streaming {} at {}.'.format(camera.resolution, camera.fps))
 logger.debug('\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'
-             '|          Begin analyzing video stream.           |\n'
-             '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n')
+             '          Streaming {} at {}.           \n'
+             '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'
+             ''.format(camera.resolution, camera.fps))
 
 # Init HOG detector, set SVM to pre-trained human silhouette detector.
 hog = cv2.HOGDescriptor()
@@ -128,8 +135,6 @@ for f in camera.capture_continuous(rawCapture, format="bgr",
         text = 'Silhouette'
 
     # Populate the clone frame with datetime and relevant status information.
-    # print("{} original boxes, {} after suppression".format(
-    #       len(bodyRects), len(pick)))
     ts = timestamp.strftime("%A %d %B %Y %I:%M:%S%p")
     cv2.putText(frameClone,
                 "Sector: {}".format(text),
