@@ -9,7 +9,6 @@ Dept. of Electrical Engineering and Technology
 Wentworth Institute of Technology.
 """
 import argparse
-import datetime
 import json
 import sys
 import time
@@ -21,6 +20,7 @@ sys.path.append('/usr/local/lib/python2.7/site-packages')
 import cv2
 import scrying_utils.init_logger as scrying_log
 import scrying_utils.preprocessing_func as prepro
+import scrying_utils.time_disp as time_disp
 import imutils
 from imutils.object_detection import non_max_suppression
 import numpy as np
@@ -33,6 +33,9 @@ __credits__ = ["Adrian Rosebrock", "Nelson Bamford", "Ariel Martinez"]
 __license__ = "MIT"
 __maintainer__ = "Sze 'Ron' Chau"
 __email__ = "wodiesan@gmail.com"
+
+# Get the local timezone to convert UTC time for display.
+local_tz = time_disp.get_localzone()
 
 # Init logging to console and files.
 logger_rpi = 'history/'
@@ -91,10 +94,8 @@ hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 for f in camera.capture_continuous(rawCapture, format="bgr",
                                    use_video_port=True):
 
-    # Grab raw numpy array representing the img.
-    # Init timestamp and on-screen status text.
+    # Grab raw numpy array representing img and init on-screen status text.
     frame = f.array
-    timestamp = datetime.datetime.now()
     text = "Clear"
 
     # Resize frame, preprocess with grayscale and Gaussian blur.
@@ -134,8 +135,8 @@ for f in camera.capture_continuous(rawCapture, format="bgr",
                       2)
         text = 'Silhouette'
 
-    # Populate the clone frame with datetime and relevant status information.
-    ts = timestamp.strftime("%A %d %B %Y %I:%M:%S%p")
+    # Populate the display feed with the time and relevant status information.
+    # ts = timestamp.strftime("%A %d %B %Y %I:%M:%S%p")
     cv2.putText(frameClone,
                 "Sector: {}".format(text),
                 (10, 20),
@@ -145,7 +146,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr",
                 2)
 
     cv2.putText(frameClone,
-                ts,
+                time_disp.utcnow(local_tz),
                 (10, frame.shape[0] - 10),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 conf["font_time"],
