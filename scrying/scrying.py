@@ -80,11 +80,11 @@ except PiCamera.exc.PiCameraError:
 # Complete init for camera.
 rawCapture = PiRGBArray(camera, size=tuple(conf["480p"]))
 time.sleep(conf["camera_warmup_time"])
-logger.debug('Streaming {} at {}.'.format(camera.resolution, camera.fps))
+# logger.debug('Streaming {} at {}.'.format(camera.resolution, camera.framerate))
 logger.debug('\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'
-             '          Streaming {} at {}.           \n'
+             '     Streaming {} resolution at {} fps.           \n'
              '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'
-             ''.format(camera.resolution, camera.fps))
+             ''.format(camera.resolution, camera.framerate))
 
 # Init HOG detector, set SVM to pre-trained human silhouette detector.
 hog = cv2.HOGDescriptor()
@@ -146,7 +146,7 @@ for f in camera.capture_continuous(rawCapture, format="bgr",
                 2)
 
     cv2.putText(frameClone,
-                time_disp.utcnow(local_tz),
+                str(time_disp.utcnow(local_tz)),
                 (10, frame.shape[0] - 10),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 conf["font_time"],

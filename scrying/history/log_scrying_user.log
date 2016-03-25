@@ -120,3 +120,67 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2016-03-21 02:39:27,192 - __main__ - DEBUG - User terminated program. Exiting.
+2016-03-25 18:42:08,738 - __main__ - DEBUG - Init logging to console and files successful.
+2016-03-25 18:42:08,741 - __main__ - DEBUG - Parsing command-line arguments.
+2016-03-25 18:42:08,756 - __main__ - ERROR - No Haar facial classifer found. Skipping facial detect.
+2016-03-25 18:42:08,760 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-03-25 18:42:08,764 - __main__ - DEBUG - Command-line arguments loaded.
+2016-03-25 18:42:08,766 - __main__ - DEBUG - Initiating camera module.
+2016-03-25 18:43:52,872 - __main__ - DEBUG - Init logging to console and files successful.
+2016-03-25 18:43:52,873 - __main__ - DEBUG - Parsing command-line arguments.
+2016-03-25 18:43:52,887 - __main__ - ERROR - No Haar facial classifer found. Skipping facial detect.
+2016-03-25 18:43:52,889 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-03-25 18:43:52,893 - __main__ - DEBUG - Command-line arguments loaded.
+2016-03-25 18:43:52,894 - __main__ - DEBUG - Initiating camera module.
+2016-03-25 18:43:56,021 - __main__ - DEBUG - Streaming (640, 480) at 20.
+2016-03-25 18:45:46,499 - __main__ - DEBUG - Init logging to console and files successful.
+2016-03-25 18:45:46,501 - __main__ - DEBUG - Parsing command-line arguments.
+2016-03-25 18:45:46,515 - __main__ - ERROR - No Haar facial classifer found. Skipping facial detect.
+2016-03-25 18:45:46,517 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-03-25 18:45:46,520 - __main__ - DEBUG - Command-line arguments loaded.
+2016-03-25 18:45:46,522 - __main__ - DEBUG - Initiating camera module.
+2016-03-25 18:45:49,652 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          Streaming (640, 480) at 20.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-03-25 18:48:01,233 - __main__ - DEBUG - Init logging to console and files successful.
+2016-03-25 18:48:01,234 - __main__ - DEBUG - Parsing command-line arguments.
+2016-03-25 18:48:01,248 - __main__ - ERROR - No Haar facial classifer found. Skipping facial detect.
+2016-03-25 18:48:01,251 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-03-25 18:48:01,254 - __main__ - DEBUG - Command-line arguments loaded.
+2016-03-25 18:48:01,256 - __main__ - DEBUG - Initiating camera module.
+2016-03-25 18:48:04,377 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          Streaming (640, 480) at 20.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-03-25 18:48:55,792 - __main__ - DEBUG - User terminated program. Exiting.
+2016-03-25 18:51:29,630 - __main__ - DEBUG - Init logging to console and files successful.
+2016-03-25 18:51:29,632 - __main__ - DEBUG - Parsing command-line arguments.
+2016-03-25 18:51:29,646 - __main__ - ERROR - No Haar facial classifer found. Skipping facial detect.
+2016-03-25 18:51:29,648 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-03-25 18:51:29,652 - __main__ - DEBUG - Command-line arguments loaded.
+2016-03-25 18:51:29,654 - __main__ - DEBUG - Initiating camera module.
+2016-03-25 18:51:32,782 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          Streaming (640, 480) at 20.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-03-25 18:52:17,840 - __main__ - DEBUG - User terminated program. Exiting.
+2016-03-25 18:55:24,450 - __main__ - DEBUG - Init logging to console and files successful.
+2016-03-25 18:55:24,451 - __main__ - DEBUG - Parsing command-line arguments.
+2016-03-25 18:55:24,465 - __main__ - ERROR - No Haar facial classifer found. Skipping facial detect.
+2016-03-25 18:55:24,467 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-03-25 18:55:24,471 - __main__ - DEBUG - Command-line arguments loaded.
+2016-03-25 18:55:24,472 - __main__ - DEBUG - Initiating camera module.
+2016-03-25 18:55:27,596 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       Streaming (640, 480) resolution at 20 fps.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-03-25 18:56:18,971 - __main__ - DEBUG - User terminated program. Exiting.
