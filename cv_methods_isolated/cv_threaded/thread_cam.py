@@ -1,9 +1,15 @@
+#!/usr/bin/env python
 # USAGE
-# python picamera_fps_demo.py
-# python picamera_fps_demo.py --display 1
+# python thread_cam.py --display 1
+
+from __future__ import print_function
+
 
 # import the necessary packages
-from __future__ import print_function
+# Path added to access default site packages on RPi2.
+import sys
+sys.path.append('/usr/local/lib/python2.7/site-packages')
+
 from imutils.video.pivideostream import PiVideoStream
 from imutils.video import FPS
 from picamera.array import PiRGBArray
@@ -12,6 +18,9 @@ import argparse
 import imutils
 import time
 import cv2
+
+# Path added to access default site packages on RPi2.
+sys.path.append('/usr/local/lib/python2.7/site-packages')
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
