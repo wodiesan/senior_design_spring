@@ -6,6 +6,9 @@ Part of ELEC4500 Senior Electronic Design I, Spring 2016
 Dept. of Electrical Engineering and Technology
 Wentworth Institute of Technology.
 """
+#import sys
+# Path added to access default site packages (cv2) on RPi2.
+#sys.path.append('/usr/local/lib/python2.7/site-packages')
 from datetime import datetime
 import pytz
 import time

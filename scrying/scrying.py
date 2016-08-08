@@ -18,7 +18,9 @@ import warnings
 # Path added to access default site packages (cv2) on RPi2.
 sys.path.append('/usr/local/lib/python2.7/site-packages')
 import cv2
+#import scrying_utils.camera_func as stream
 import scrying_utils.init_logger as scrying_log
+from scrying_utils.haarcascade import HaarDetect
 import scrying_utils.preprocessing_func as prepro
 import scrying_utils.time_disp as time_disp
 import imutils
@@ -48,11 +50,14 @@ logger.debug('Init logging to console and files successful.')
 logger.debug('Parsing command-line arguments.')
 ap = argparse.ArgumentParser()
 ap.add_argument("-c", "--conf", required=True, help="JSON camera config path.")
-ap.add_argument("-f", "--face", action='store_true', required=False,
+ap.add_argument("-f", "--face", required=False,
                 help="Face Haar path.")
 ap.add_argument("-v", "--vehi", action='store_true', required=False,
                 help="Vehicle Haar path.")
 args = vars(ap.parse_args())
+
+# Facial detection.
+fd = HaarDetect(args['face'])
 
 # Alert the user if any of the optional command-line options are missing.
 if not args['face']:
@@ -80,15 +85,15 @@ except PiCamera.exc.PiCameraError:
 # Complete init for camera.
 rawCapture = PiRGBArray(camera, size=tuple(conf["480p"]))
 time.sleep(conf["camera_warmup_time"])
-# logger.debug('Streaming {} at {}.'.format(camera.resolution, camera.framerate))
 logger.debug('\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'
              '     Streaming {} resolution at {} fps.           \n'
              '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'
              ''.format(camera.resolution, camera.framerate))
 
 # Init HOG detector, set SVM to pre-trained human silhouette detector.
-hog = cv2.HOGDescriptor()
-hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
+# DISABLED FOR SENIOR DESIGN SHOWCASE ON 09AUG2016.
+# hog = cv2.HOGDescriptor()
+# hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
 # Capture frames from camera module.
 for f in camera.capture_continuous(rawCapture, format="bgr",
@@ -100,18 +105,28 @@ for f in camera.capture_continuous(rawCapture, format="bgr",
 
     # Resize frame, preprocess with grayscale and Gaussian blur.
     frame = imutils.resize(frame, width=conf["width_480p"])
-    # gray = prepro.grayscale(frame)
-    gray = prepro.gauss(frame, (21, 21), 0)
+    gray = prepro.grayscale(frame)
+    # gray = prepro.gauss(frame, (21, 21), 0)
 
-    # Save a clone of the frame before preprocessing. Used for live preview.
+    # Detect faces in the image and then clone the frame
+    # so that we can draw on it.
+    # faceRects = fd.detect(gray, scaleFac=1.1, minNbrs=5,
+    #                       minSize=(30, 30))
+    faceRects = fd.detect(gray, 1.1, 5, (30, 30))
     frameClone = frame.copy()
+
+    # Loop over the face bounding boxes and draw them.
+    for (fX, fY, fW, fH) in faceRects:
+        cv2.rectangle(frameClone, (fX, fY), (fX + fW, fY + fH), (0, 255, 0), 3)
+        text = 'Face detected!'
 
     # Detect silhouettes in frame. Adjust scale based on camera location.
     # winStride is the sliding window step size coordinates.
     # A > scale val evals < layers, t.f. it runs faster but less accurate.
     # weights is the confidence val returned from SVG per detection.
-    (bodyRects, weights) = hog.detectMultiScale(gray, winStride=(4, 4),
-                                                padding=(8, 8), scale=1.05)
+    # DISABLED FOR SENIOR DESIGN SHOWCASE ON 09AUG2016.
+    # (bodyRects, weights) = hog.detectMultiScale(gray, winStride=(4, 4),
+    #                                             padding=(8, 8), scale=1.05)
 
     # Draw bounding boxes on detected regions of the clone frame.
     # for (x, y, w, h) in bodyRects:
@@ -123,17 +138,19 @@ for f in camera.capture_continuous(rawCapture, format="bgr",
 
     # Apply non-maxima suppression to bounding boxes using a large overlap
     # thresh to try to maintain overlapping boxes.
-    bodyRects = np.array([[x, y, x + w, y + h] for (x, y, w, h) in bodyRects])
-    pick = non_max_suppression(bodyRects, probs=None, overlapThresh=0.65)
+    # DISABLED FOR SENIOR DESIGN SHOWCASE ON 09AUG2016.
+    # bodyRects = np.array([[x, y, x + w, y + h] for (x, y, w, h) in bodyRects])
+    # pick = non_max_suppression(bodyRects, probs=None, overlapThresh=0.65)
 
     # Draw the final bounding boxes on the clone.
-    for (xA, yA, xB, yB) in pick:
-        cv2.rectangle(frameClone,
-                      (xA, yA),
-                      (xB, yB),
-                      tuple(conf["tyrian"]),
-                      2)
-        text = 'Silhouette'
+    # DISABLED FOR SENIOR DESIGN SHOWCASE ON 09AUG2016.
+    # for (xA, yA, xB, yB) in pick:
+    #     cv2.rectangle(frameClone,
+    #                   (xA, yA),
+    #                   (xB, yB),
+    #                   tuple(conf["tyrian"]),
+    #                   2)
+    #     text = 'Silhouette'
 
     # Populate the display feed with the time and relevant status information.
     # ts = timestamp.strftime("%A %d %B %Y %I:%M:%S%p")
