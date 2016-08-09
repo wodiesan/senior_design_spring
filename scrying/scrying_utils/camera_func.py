@@ -12,7 +12,7 @@ from picamera.array import PiRGBArray
 from picamera import PiCamera
 
 
-class Scrying_Stream:
+class Scry:
     '''Utilize multi-threading for capturing and processing frames.'''
     def __init__(self, resolution=(640, 480), framerate=15, rotation=270):
         # Init camera module and stream.

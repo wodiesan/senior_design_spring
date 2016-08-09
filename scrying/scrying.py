@@ -18,13 +18,14 @@ import warnings
 # Path added to access default site packages (cv2) on RPi2.
 sys.path.append('/usr/local/lib/python2.7/site-packages')
 import cv2
-#import scrying_utils.camera_func as stream
+# import scrying_utils.camera_func as scry
+from scrying_utils.camera_func import Scry
 import scrying_utils.init_logger as scrying_log
 from scrying_utils.haarcascade import HaarDetect
 import scrying_utils.preprocessing_func as prepro
 import scrying_utils.time_disp as time_disp
 import imutils
-from imutils.object_detection import non_max_suppression
+# from imutils.object_detection import non_max_suppression
 import numpy as np
 from picamera.array import PiRGBArray
 from picamera import PiCamera
@@ -72,23 +73,31 @@ logger.debug('Command-line arguments loaded.')
 
 # Init camera module with JSON config file.
 logger.debug('Initiating camera module.')
-try:
-    camera = PiCamera()
-    camera.resolution = tuple(conf["480p"])
-    camera.framerate = conf["fps"]
-    camera.rotation = conf["rotation"]
+res = tuple(conf["480p"])
+fps = conf["fps"]
+rot = conf["rotation"]
 
-except PiCamera.exc.PiCameraError:
-    logger.critical('Unable to access camera module. Exiting.')
-    sys.exit()
+# try:
+#     camera = PiCamera()
+#     camera.resolution = tuple(conf["480p"])
+#     camera.framerate = conf["fps"]
+#     camera.rotation = conf["rotation"]
 
-# Complete init for camera.
-rawCapture = PiRGBArray(camera, size=tuple(conf["480p"]))
+# except PiCamera.exc.PiCameraError:
+#     logger.critical('Unable to access camera module. Exiting.')
+#     sys.exit()
+
+# Init seperate thread for pipeline.
+camera = Scry().start()
 time.sleep(conf["camera_warmup_time"])
+
+# # Complete init for camera.
+# rawCapture = PiRGBArray(camera, size=tuple(conf["480p"]))
+# time.sleep(conf["camera_warmup_time"])
 logger.debug('\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'
              '     Streaming {} resolution at {} fps.           \n'
              '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'
-             ''.format(camera.resolution, camera.framerate))
+             ''.format(res, fps))
 
 # Init HOG detector, set SVM to pre-trained human silhouette detector.
 # DISABLED FOR SENIOR DESIGN SHOWCASE ON 09AUG2016.
@@ -96,11 +105,16 @@ logger.debug('\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'
 # hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
 # Capture frames from camera module.
-for f in camera.capture_continuous(rawCapture, format="bgr",
-                                   use_video_port=True):
+# camera.start()
+# for f in camera.capture_continuous(rawCapture, format="bgr",
+#                                    use_video_port=True):
+
+# for f in camera.stream:
+while camera:
 
     # Grab raw numpy array representing img and init on-screen status text.
-    frame = f.array
+    # frame = f.array
+    frame = camera.read()
     text = "Clear"
 
     # Resize frame, preprocess with grayscale and Gaussian blur.
@@ -178,7 +192,9 @@ for f in camera.capture_continuous(rawCapture, format="bgr",
         # Pressing 'q' at anytime to terminate and exit.
         if key == ord("q"):
             logger.debug('User terminated program. Exiting.')
+            cv2.destroyAllWindows()
+            camera.stop()
             break
 
     # Clear stream in preparation for the next frame.
-    rawCapture.truncate(0)
+    # rawCapture.truncate(0)
