@@ -18,14 +18,14 @@ import warnings
 # Path added to access default site packages (cv2) on RPi2.
 sys.path.append('/usr/local/lib/python2.7/site-packages')
 import cv2
-# import scrying_utils.camera_func as scry
 from scrying_utils.camera_func import Scry
 import scrying_utils.init_logger as scrying_log
 from scrying_utils.haarcascade import HaarDetect
 import scrying_utils.preprocessing_func as prepro
 import scrying_utils.time_disp as time_disp
 import imutils
-# from imutils.object_detection import non_max_suppression
+from imutils.video import FPS
+from imutils.object_detection import non_max_suppression
 import numpy as np
 from picamera.array import PiRGBArray
 from picamera import PiCamera
@@ -50,6 +50,8 @@ logger.debug('Init logging to console and files successful.')
 # Construct the argument parse.
 logger.debug('Parsing command-line arguments.')
 ap = argparse.ArgumentParser()
+ap.add_argument("-n", "--num-frames", type=int, default=100,
+                help="# of frames to loop over for FPS test")
 ap.add_argument("-c", "--conf", required=True, help="JSON camera config path.")
 ap.add_argument("-f", "--face", required=False,
                 help="Face Haar path.")
@@ -88,12 +90,9 @@ rot = conf["rotation"]
 #     sys.exit()
 
 # Init seperate thread for pipeline.
+# rawCapture = PiRGBArray(camera, size=tuple(conf["480p"]))
 camera = Scry().start()
 time.sleep(conf["camera_warmup_time"])
-
-# # Complete init for camera.
-# rawCapture = PiRGBArray(camera, size=tuple(conf["480p"]))
-# time.sleep(conf["camera_warmup_time"])
 logger.debug('\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'
              '     Streaming {} resolution at {} fps.           \n'
              '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'
@@ -109,7 +108,12 @@ logger.debug('\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'
 # for f in camera.capture_continuous(rawCapture, format="bgr",
 #                                    use_video_port=True):
 
-# for f in camera.stream:
+logger.debug('Begin FPS counter.')
+fps = FPS().start()
+
+# While statement for multithreaded approach; for statement otherwise.
+# for f in camera.capture_continuous(rawCapture, format="bgr",
+#                                    use_video_port=True):
 while camera:
 
     # Grab raw numpy array representing img and init on-screen status text.
@@ -118,7 +122,7 @@ while camera:
     text = "Clear"
 
     # Resize frame, preprocess with grayscale and Gaussian blur.
-    frame = imutils.resize(frame, width=conf["width_480p"])
+    # frame = imutils.resize(frame, width=conf["width_480p"])
     gray = prepro.grayscale(frame)
     # gray = prepro.gauss(frame, (21, 21), 0)
 
@@ -191,10 +195,17 @@ while camera:
 
         # Pressing 'q' at anytime to terminate and exit.
         if key == ord("q"):
+            fps.stop()
+            print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
+            print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
             logger.debug('User terminated program. Exiting.')
             cv2.destroyAllWindows()
             camera.stop()
             break
 
+    # Update FPS counter.
+    fps.update()
+
     # Clear stream in preparation for the next frame.
+    # Comment out for multithreaded implementation.
     # rawCapture.truncate(0)

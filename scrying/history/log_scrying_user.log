@@ -331,3 +331,189 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2016-08-08 20:28:06,067 - __main__ - DEBUG - User terminated program. Exiting.
+2016-08-08 20:39:42,226 - __main__ - DEBUG - Init logging to console and files successful.
+2016-08-08 20:39:42,226 - __main__ - DEBUG - Parsing command-line arguments.
+2016-08-08 20:39:42,387 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-08-08 20:39:42,388 - __main__ - DEBUG - Command-line arguments loaded.
+2016-08-08 20:39:42,389 - __main__ - DEBUG - Initiating camera module.
+2016-08-08 20:39:45,291 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Streaming (640, 480) resolution at 20 fps.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-08-08 20:39:45,292 - __main__ - DEBUG - Begin FPS counter.
+2016-08-08 20:42:10,627 - __main__ - DEBUG - User terminated program. Exiting.
+2016-08-08 20:46:22,644 - __main__ - DEBUG - Init logging to console and files successful.
+2016-08-08 20:46:22,645 - __main__ - DEBUG - Parsing command-line arguments.
+2016-08-08 20:46:22,953 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-08-08 20:46:22,955 - __main__ - DEBUG - Command-line arguments loaded.
+2016-08-08 20:46:22,956 - __main__ - DEBUG - Initiating camera module.
+2016-08-08 20:46:25,910 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Streaming (640, 480) resolution at 20 fps.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-08-08 20:46:25,911 - __main__ - DEBUG - Begin FPS counter.
+2016-08-08 20:46:47,196 - __main__ - DEBUG - User terminated program. Exiting.
+2016-08-08 20:49:18,467 - __main__ - DEBUG - Init logging to console and files successful.
+2016-08-08 20:49:18,468 - __main__ - DEBUG - Parsing command-line arguments.
+2016-08-08 20:49:18,798 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-08-08 20:49:18,800 - __main__ - DEBUG - Command-line arguments loaded.
+2016-08-08 20:49:18,801 - __main__ - DEBUG - Initiating camera module.
+2016-08-08 20:49:21,801 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Streaming (640, 480) resolution at 20 fps.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-08-08 20:49:21,802 - __main__ - DEBUG - Begin FPS counter.
+2016-08-08 20:49:47,007 - __main__ - DEBUG - User terminated program. Exiting.
+2016-08-08 20:55:36,401 - __main__ - DEBUG - Init logging to console and files successful.
+2016-08-08 20:55:36,402 - __main__ - DEBUG - Parsing command-line arguments.
+2016-08-08 20:55:36,716 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-08-08 20:55:36,718 - __main__ - DEBUG - Command-line arguments loaded.
+2016-08-08 20:55:36,719 - __main__ - DEBUG - Initiating camera module.
+2016-08-08 20:55:39,679 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Streaming (640, 480) resolution at 20 fps.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-08-08 20:55:39,681 - __main__ - DEBUG - Begin FPS counter.
+2016-08-08 21:01:24,758 - __main__ - DEBUG - Init logging to console and files successful.
+2016-08-08 21:01:24,759 - __main__ - DEBUG - Parsing command-line arguments.
+2016-08-08 21:01:25,071 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-08-08 21:01:25,074 - __main__ - DEBUG - Command-line arguments loaded.
+2016-08-08 21:01:25,075 - __main__ - DEBUG - Initiating camera module.
+2016-08-08 21:01:28,033 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Streaming (640, 480) resolution at 20 fps.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-08-08 21:01:28,034 - __main__ - DEBUG - Begin FPS counter.
+2016-08-08 21:01:57,929 - __main__ - DEBUG - User terminated program. Exiting.
+2016-08-08 21:03:13,799 - __main__ - DEBUG - Init logging to console and files successful.
+2016-08-08 21:03:13,800 - __main__ - DEBUG - Parsing command-line arguments.
+2016-08-08 21:03:14,115 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-08-08 21:03:14,118 - __main__ - DEBUG - Command-line arguments loaded.
+2016-08-08 21:03:14,119 - __main__ - DEBUG - Initiating camera module.
+2016-08-08 21:03:17,078 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Streaming (640, 480) resolution at 20 fps.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-08-08 21:03:17,079 - __main__ - DEBUG - Begin FPS counter.
+2016-08-08 21:03:42,695 - __main__ - DEBUG - User terminated program. Exiting.
+2016-08-08 21:09:02,548 - __main__ - DEBUG - Init logging to console and files successful.
+2016-08-08 21:09:02,549 - __main__ - DEBUG - Parsing command-line arguments.
+2016-08-08 21:09:02,866 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-08-08 21:09:02,869 - __main__ - DEBUG - Command-line arguments loaded.
+2016-08-08 21:09:02,869 - __main__ - DEBUG - Initiating camera module.
+2016-08-08 21:10:27,049 - __main__ - DEBUG - Init logging to console and files successful.
+2016-08-08 21:10:27,050 - __main__ - DEBUG - Parsing command-line arguments.
+2016-08-08 21:10:27,363 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-08-08 21:10:27,366 - __main__ - DEBUG - Command-line arguments loaded.
+2016-08-08 21:10:27,367 - __main__ - DEBUG - Initiating camera module.
+2016-08-08 21:10:30,327 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Streaming (640, 480) resolution at 20 fps.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-08-08 21:10:30,328 - __main__ - DEBUG - Begin FPS counter.
+2016-08-08 21:10:56,383 - __main__ - DEBUG - User terminated program. Exiting.
+2016-08-08 21:13:28,467 - __main__ - DEBUG - Init logging to console and files successful.
+2016-08-08 21:13:28,468 - __main__ - DEBUG - Parsing command-line arguments.
+2016-08-08 21:13:28,782 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-08-08 21:13:28,785 - __main__ - DEBUG - Command-line arguments loaded.
+2016-08-08 21:13:28,786 - __main__ - DEBUG - Initiating camera module.
+2016-08-08 21:13:31,747 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Streaming (640, 480) resolution at 20 fps.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-08-08 21:13:31,748 - __main__ - DEBUG - Begin FPS counter.
+2016-08-08 21:13:57,509 - __main__ - DEBUG - User terminated program. Exiting.
+2016-08-08 21:17:59,347 - __main__ - DEBUG - Init logging to console and files successful.
+2016-08-08 21:17:59,348 - __main__ - DEBUG - Parsing command-line arguments.
+2016-08-08 21:17:59,670 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-08-08 21:17:59,672 - __main__ - DEBUG - Command-line arguments loaded.
+2016-08-08 21:17:59,673 - __main__ - DEBUG - Initiating camera module.
+2016-08-08 21:18:02,635 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Streaming (640, 480) resolution at 20 fps.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-08-08 21:18:02,636 - __main__ - DEBUG - Begin FPS counter.
+2016-08-08 21:18:32,781 - __main__ - DEBUG - User terminated program. Exiting.
+2016-08-08 22:16:23,170 - __main__ - DEBUG - Init logging to console and files successful.
+2016-08-08 22:16:23,171 - __main__ - DEBUG - Parsing command-line arguments.
+2016-08-08 22:16:23,479 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-08-08 22:16:23,482 - __main__ - DEBUG - Command-line arguments loaded.
+2016-08-08 22:16:23,482 - __main__ - DEBUG - Initiating camera module.
+2016-08-08 22:16:26,442 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Streaming (640, 480) resolution at 20 fps.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-08-08 22:16:26,443 - __main__ - DEBUG - Begin FPS counter.
+2016-08-08 22:20:13,612 - __main__ - DEBUG - User terminated program. Exiting.
+2016-08-08 22:39:21,712 - __main__ - DEBUG - Init logging to console and files successful.
+2016-08-08 22:39:21,715 - __main__ - DEBUG - Parsing command-line arguments.
+2016-08-08 22:39:22,055 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-08-08 22:39:22,059 - __main__ - DEBUG - Command-line arguments loaded.
+2016-08-08 22:39:22,060 - __main__ - DEBUG - Initiating camera module.
+2016-08-08 22:39:25,151 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Streaming (640, 480) resolution at 20 fps.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-08-08 22:39:25,176 - __main__ - DEBUG - Begin FPS counter.
+2016-08-08 22:39:53,862 - __main__ - DEBUG - User terminated program. Exiting.
+2016-08-08 22:50:37,343 - __main__ - DEBUG - Init logging to console and files successful.
+2016-08-08 22:50:37,344 - __main__ - DEBUG - Parsing command-line arguments.
+2016-08-08 22:50:37,660 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-08-08 22:50:37,663 - __main__ - DEBUG - Command-line arguments loaded.
+2016-08-08 22:50:37,664 - __main__ - DEBUG - Initiating camera module.
+2016-08-08 22:50:40,633 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Streaming (640, 480) resolution at 20 fps.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-08-08 22:50:40,641 - __main__ - DEBUG - Begin FPS counter.
+2016-08-08 22:51:07,950 - __main__ - DEBUG - User terminated program. Exiting.
+2016-08-08 22:53:25,633 - __main__ - DEBUG - Init logging to console and files successful.
+2016-08-08 22:53:25,634 - __main__ - DEBUG - Parsing command-line arguments.
+2016-08-08 22:53:25,939 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-08-08 22:53:25,942 - __main__ - DEBUG - Command-line arguments loaded.
+2016-08-08 22:53:25,943 - __main__ - DEBUG - Initiating camera module.
+2016-08-08 22:53:28,905 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Streaming (640, 480) resolution at 20 fps.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-08-08 22:53:28,907 - __main__ - DEBUG - Begin FPS counter.
+2016-08-08 22:53:41,081 - __main__ - DEBUG - User terminated program. Exiting.
+2016-08-08 22:55:29,842 - __main__ - DEBUG - Init logging to console and files successful.
+2016-08-08 22:55:29,843 - __main__ - DEBUG - Parsing command-line arguments.
+2016-08-08 22:55:30,157 - __main__ - ERROR - No Haar vehicle classifier found. Skipping vehicle detect.
+2016-08-08 22:55:30,159 - __main__ - DEBUG - Command-line arguments loaded.
+2016-08-08 22:55:30,160 - __main__ - DEBUG - Initiating camera module.
+2016-08-08 22:55:33,126 - __main__ - DEBUG - 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     Streaming (640, 480) resolution at 20 fps.           
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2016-08-08 22:55:33,128 - __main__ - DEBUG - Begin FPS counter.
+2016-08-08 23:07:54,042 - __main__ - DEBUG - User terminated program. Exiting.
